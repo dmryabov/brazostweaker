@@ -285,20 +285,166 @@ private:
 	}
 
 	/// <summary>
+	/// enable Software NB Pstate switching
+	/// </summary>
+	static void EnableNBPstateSwitching()
+    {
+		//D18 Device F0 -> C0
+		//D0 Device F0 -> 00
+		//10,20,30,40,50,60 -> no device
+        // value of interest: D18F6x90[ClockRate]
+        DWORD settings = ReadPciConfigDword(0xC6, 0x90);
+        settings = settings | 0x40000000; //assert Bit30 NbPsCtrlDis - disable HW switching
+        WritePciConfigDwordEx(0xC6, 0x90, settings); //write to register - enable SW NB Pstate switching
+    }
+
+    /// <summary>
+    /// disable Software NB Pstate switching
+    /// </summary>
+    static void DisableNBPstateSwitching()
+    {
+		//D18 Device F0 -> C0
+        //D0 Device F0 -> 00
+        //10,20,30,40,50,60 -> no device
+        // value of interest: D18F6x90[NbPsCtrlDis]
+        DWORD settings = ReadPciConfigDword(0xC6, 0x90);
+        settings = settings & 0x8FFFFFFF; //reset Bit30:28 NbPsCtrlDis,NbPsForceSel,NbPsForceReq - enable HW switching
+        WritePciConfigDword(0xC6, 0x90, settings); //write to register - disable SW NB Pstate switching
+    }
+
+    static short GetNbPState()
+    {
+        //D18 Device F0 -> C0
+        //D0 Device F0 -> 00
+        //10,20,30,40,50,60 -> no device
+        // value of interest: D18F6x98[NbPs1Act]
+        DWORD settings = ReadPciConfigDword(0xC6, 0x98);
+        return (short)((settings >> 2) & 0x1);
+    }
+
+        /// <summary>
+    /// Puts NB into the specified software P-state 1.
+    /// </summary>
+    static void SwitchToNbPState(unsigned int forcepstate)
+    {
+        //D18 Device F0 -> C0
+        //D0 Device F0 -> 00
+        //10,20,30,40,50,60 -> no device
+        // value of interest: D18F6x90
+        DWORD settings = ReadPciConfigDword(0xC6, 0x90);
+        if (forcepstate == 1) settings = settings | 0x20000000; //assert Bit29 NbPsForceSel - target NB-Pstate 1
+        else if (forcepstate == 0) settings = settings & 0xDFFFFFFF; //reset Bit29 NbPsForceSel - target NB-Pstate 0
+        else return;
+        WritePciConfigDword(0xC6, 0x90, settings); //write to register - setting target NB-Pstate
+        settings = ReadPciConfigDword(0xC6, 0x90);
+        settings = settings | 0x10000000; //assert Bit30 NbPsForceReq
+        WritePciConfigDword(0xC6, 0x90, settings); //initiate NB-Pstate request
+    }
+
+	/// <summary>
 	/// Saves the specified settings for a core's P-state.
 	/// </summary>
 	static void SavePState(unsigned int index, unsigned int lowMsr, unsigned int core)
 	{
-		const unsigned int msrIndex = 0xC0010064u + index;
-		const DWORD_PTR affinityMask = (DWORD_PTR)1 << core;
+		if (index < 3) { //this is, what we need to do for the CPU
+			const unsigned int msrIndex = 0xC0010064u + index;
+			const DWORD_PTR affinityMask = (DWORD_PTR)1 << core;
 
-		DWORD lower, higher;
-		RdmsrTx(msrIndex, &lower, &higher, affinityMask);
+			DWORD lower, higher;
+			RdmsrTx(msrIndex, &lower, &higher, affinityMask);
 
-		const DWORD lowMsrMask = 0xFE40FFFFu;
-		lower = (lower & ~lowMsrMask) | (lowMsr & lowMsrMask);
+			const DWORD lowMsrMask = 0xFE40FFFFu;
+			lower = (lower & ~lowMsrMask) | (lowMsr & lowMsrMask);
 
-		WrmsrTx(msrIndex, lower, higher, affinityMask);
+			WrmsrTx(msrIndex, lower, higher, affinityMask);
+		} else if ((index == 3 || index == 4) && (core == 1)) { //we will handle NB P0/1 settings here
+			index = index - 3;
+			EnableNBPstateSwitching();
+			unsigned int curNbstate = GetNbPState();
+			unsigned int changedNbstate = curNbstate;
+			bool applyImmediately = (curNbstate != index);
+			if (applyImmediately)
+            {
+				SwitchToNbPState(index);
+                for (int i = 0; i < 1000; i++)
+                {
+					changedNbstate = GetNbPState();
+					Sleep(3);
+					if (changedNbstate == index) i = 1000;
+                }
+            }
+			curNbstate = GetNbPState();
+            if (index == 0) // NB P-state0
+            {
+				//DRAM needs to be set into SelfRefresh
+                //K10Manager.DisDllShutDown();
+                //K10Manager.EnterDramSelfRefresh(); //NB Pstate HW switching needs to be disabled before NbPsCtrDis
+                // save the new settings
+                DWORD config = ReadPciConfigDword(0xC3, 0xDC);
+                //const uint mask = 0x07F7F000; //enable overwrite of Vid and Div
+                const DWORD mask = 0x0007F000; //enable overwrite of Vid only
+                config = (config & ~mask) | (lowMsr & mask);
+                DWORD voltage;
+				ReadPciConfigDwordEx(0xC3, 0x15C, &voltage);
+                const DWORD maskvolt = 0x00007F00;
+                DWORD check = lowMsr >> 12 & 0x7F;
+                voltage = (voltage & ~maskvolt) | ((check << 8) & maskvolt);
+                WritePciConfigDword(0xC3, 0xDC, config);
+                WritePciConfigDwordEx(0xC3, 0x15C, voltage);
+			} else if (index == 1)
+            {
+                // save the new settings
+                //K10Manager.DisDllShutDown();
+                //K10Manager.EnterDramSelfRefresh(); //NB Pstate HW switching needs to be disabled before NbPsCtrDis
+                DWORD config = ReadPciConfigDword(0xC6, 0x90);
+                //const uint mask = 0x00007F7F; //enable DID and VID modification
+                const DWORD mask = 0x00007F00; //enable VID modification only
+                config = (config & ~mask) | (lowMsr & mask);
+                DWORD voltage;
+				ReadPciConfigDwordEx(0xC3, 0x15C, &voltage);
+                const DWORD maskvolt = 0x0000007F;
+                DWORD check = lowMsr >> 8;
+                voltage = (voltage & ~maskvolt) | (check & maskvolt);
+				WritePciConfigDword(0xC6, 0x90, config);
+                WritePciConfigDwordEx(0xC3, 0x15C, voltage);
+            }
+			if (curNbstate == 0)
+            {
+                SwitchToNbPState(1);
+                for (int i = 0; i < 1000; i++)
+                {
+                    changedNbstate = GetNbPState();
+                    Sleep(3); // let transitions complete
+                    if (changedNbstate == 1) i = 1000;
+                }
+                SwitchToNbPState(0);
+                for (int i = 0; i < 1000; i++)
+                {
+                    changedNbstate = GetNbPState();
+                    Sleep(3); // let transitions complete
+                    if (changedNbstate == 0) i = 1000;
+                }
+            }
+            else if (curNbstate == 1)
+            {
+                SwitchToNbPState(0);
+                for (int i = 0; i < 1000; i++)
+                {
+                    changedNbstate = GetNbPState();
+                    Sleep(3); // let transitions complete
+                    if (changedNbstate == 0) i = 1000;
+                }
+                SwitchToNbPState(1);
+                for (int i = 0; i < 1000; i++)
+                {
+                    changedNbstate = GetNbPState();
+                    Sleep(3); // let transitions complete
+                    if (changedNbstate == 1) i = 1000;
+                }
+            }
+
+			DisableNBPstateSwitching();
+		} 
 	}
 
 
