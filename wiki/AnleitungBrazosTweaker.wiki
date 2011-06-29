@@ -1,0 +1,52 @@
+#summary Anleitung BrazosTweaker
+
+= Anleitung BrazosTweaker =
+Als erstes einmal installieren.
+
+Wenn es gestartet ist, dann solltest du ein kleines Fenster sehen mit 5 Reitern. Jeder Reiter steht für einen Zustand, indem sich der Prozessor befinden kann. Beim E-350 in diesem Notebook werden 3 dieser Zustände benutzt. Der jeweils aktive ist mit einem Sternchen gekennzeichnet. Sie werden P0 / P1 / P2 genannt. P0 ist dabei der schnellste und P2 der langsamste. Je nach Last vom System, wird dynamisch zwischen den Zuständen hin und hergeschaltet, wobei natürlich P2 weniger Strom verbraucht, als P0.
+
+ 
+
+Mit dem Tool kannst du jetzt die Spannung (CPU VID) für jeden dieser Zustände einzeln verstellen. Weiterhin läßt sich auch der Divider verändern, womit die jeweilige Frequenz pro Zustand einstellbar ist. Das würde ich aber erst einmal nicht verstellen. Die NB VID Einstellungen haben erst mal keine Auswirkungen, denn daran arbeite ich noch.
+
+ 
+
+Nun kannst du mal versuchen folgende Einstellungen vorzunehmen (diese funktionieren bei ziemlich vielen Usern)
+
+P0 - 1.225V
+
+P1 - 1.05V
+
+P2 - 0.85V
+
+ 
+
+Dann drückst du auf "Apply" rechts unten. Damit werden diese Einstellungen erst mal übernommen. Überprüfen kannst du, ob es übernommen wurde, mit dem sehr guten Programm CPU-Z.
+
+Wenn das alles klappt, solltest du noch Orthos downloaden. Damit kannst du einen Stresstest durchführen, damit du weißt, ob die Einstellungen stabil sind. Ansonsten können zum Besipiel Blue Screens oder Einfrieren des Rechners vorkommen.
+
+ 
+
+Du solltest jeden Zustand einzeln mit dem Stresstest überprüfen. Das kannst du mit den EnergieSchemen vom energy Management erreichen.
+
+P0 testen -> Schema Hochleistung
+
+P1 testen -> Schema Ausgewogen
+
+P2 testen -> Schema Beste Energieeinsparung
+
+ 
+
+Sollte dein Notebook bei den Tests einfrieren, ist das nicht schlimm. Dann war die Spannung etwas zu niedrig. Einfach lange den Power Knopf drücken und neu mit etwas höherer Spannung probieren (die oben angegebenen Spannungen sollten aber schon relativ sicher sein). Die eingestellten Spannungen im Tool sind noch nirgendwo fest.
+
+ 
+
+Sobald alles stabil läuft, aber auch erst dann, kannst du auf "Service..." klicken. Damit kann ein Dienst gestartet werden, der dann beim Windows Start schon dafür sorgt, daß diese modifizierten Spannungen verwendet werden. Dazu einfach auf Update klicken und die Checkbox links aktivieren. 
+
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
