@@ -131,7 +131,8 @@ namespace BrazosTweaker
                     //K10Manager.EnterDramSelfRefresh(); //NB Pstate HW switching needs to be disabled before NbPsCtrDis
                     // save the new settings
                     uint config = Program.Ols.ReadPciConfig(0xC3, 0xDC);
-                    const uint mask = 0x07F7F000; //only enable overwrite of Vid and Div
+                    //const uint mask = 0x07F7F000; //enable overwrite of Vid and Div
+                    const uint mask = 0x0007F000; //enable overwrite of Vid only
                     config = (config & ~mask) | (_msrs[0].Encode(index + 3) & mask);
                     uint voltage = Program.Ols.ReadPciConfig(0xC3, 0x15C);
                     const uint maskvolt = 0x00007F00;
@@ -146,8 +147,8 @@ namespace BrazosTweaker
                     //K10Manager.DisDllShutDown();
                     //K10Manager.EnterDramSelfRefresh(); //NB Pstate HW switching needs to be disabled before NbPsCtrDis
                     uint config = Program.Ols.ReadPciConfig(0xC6, 0x90);
-                    const uint mask = 0x00007F7F; //enable DID and VID modification
-                    //const uint mask = 0x0000007F; //enable VID modification
+                    //const uint mask = 0x00007F7F; //enable DID and VID modification
+                    const uint mask = 0x00007F00; //enable VID modification only
                     config = (config & ~mask) | (_msrs[0].Encode(index + 3) & mask);
                     uint voltage = Program.Ols.ReadPciConfig(0xC3, 0x15C);
                     const uint maskvolt = 0x0000007F;
