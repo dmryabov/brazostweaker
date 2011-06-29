@@ -99,7 +99,7 @@ namespace BrazosTweaker
 
 				// disable the current P-state and all following ones in case the
 				// first core's CPU VID is > than the previous P-state's
-				if (i > 0 && _pStates[i].Msrs[0].Vid > _pStates[i - 1].Msrs[0].Vid)
+				if ((i > 0 && _pStates[i].Msrs[0].Vid > _pStates[i - 1].Msrs[0].Vid) && (i < 3)) //ignore Vids from NB in comprison
 				{
 					for (int j = i; j < 5; j++)
 						_pStates[j] = null;
