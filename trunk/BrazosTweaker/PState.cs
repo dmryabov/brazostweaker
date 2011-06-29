@@ -256,7 +256,8 @@ namespace BrazosTweaker
 		{
 			var sb = new System.Text.StringBuilder();
 
-			double maxVid = 0, maxFSB = 0;
+            double maxVid = 0, maxFSB = 0;
+            int maxPLL = 0;
 			for (int i = 0; i < _msrs.Length; i++)
 			{
 				sb.Append(_msrs[i].Divider);
@@ -265,9 +266,10 @@ namespace BrazosTweaker
 
                 maxVid = Math.Max(maxVid, _msrs[i].Vid);
                 maxFSB = Math.Max(maxFSB, _msrs[i].FSB);
+                maxPLL = (int)Math.Max(maxFSB, _msrs[i].PLL);
 			}
 
-            sb.AppendFormat(" @ {0}V/{1}MHz", maxVid, maxFSB);
+            sb.AppendFormat(" @ {0}V/{1}MHz/{2}MHz", maxVid, maxFSB, maxPLL);
 
 			return sb.ToString();
 		}
