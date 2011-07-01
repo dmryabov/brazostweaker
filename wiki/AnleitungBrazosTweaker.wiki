@@ -34,7 +34,7 @@ Jeder Zustand sollte einzeln mit dem Stresstest überprüft werden. Das kann du 
 Sollte das Notebook bei den Tests einfrieren, ist das nicht schlimm. Dann war die Spannung etwas zu niedrig. Einfach lange den Power Knopf drücken und neu mit etwas höherer Spannung probieren (die oben angegebenen Spannungen sollten aber schon relativ sicher sein). Die eingestellten Spannungen im Tool sind noch nirgendwo fest eingestellt.
 
 Sobald alles stabil läuft, *aber auch erst dann*, kann man auf "Service..." klicken. Damit kann ein Dienst gestartet werden, der dann beim Windows Start schon dafür sorgt, daß diese modifizierten Spannungen verwendet werden. Dazu einfach auf Update klicken und die Checkbox links aktivieren.
-*Bitte noch nicht Custom Cool&Quiet aktivieren. Dann friert der Rechner nach ein Weile ein! Das wird in der nächsten Version repariert.*
+*Bitte noch nicht Custom Cool&Quiet aktivieren. Dann friert der Rechner nach einer Weile ein! Das wird in der nächsten Version repariert.*
 
 === Frequenz/Divider ===
 Wer möchte, kann auch an den Dividern jedes PStates herumstellen, womit sich noch wesentlich geringere Taktfrequenzen erreichen lassen. Zum Beispiel läuft das Notebook auch locker mit 400MHz und einer Spannung von nahe 0.7V. Allerdings ist eine Erhöhung über den Maximaltakt nicht möglich, weil die CPU intern keine niedrigeren Divider übernimmt.
