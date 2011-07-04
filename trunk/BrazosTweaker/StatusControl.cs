@@ -65,18 +65,18 @@ namespace BrazosTweaker
         /// </summary>
         public void LoadFromHardware()
         {
-            Reg64CPU.Text = "63     59     55     51     47     43     39     35     31     27     23     19     15     11     7       3    0\n" 
-                + COFVidString() + "\n" + CPUPstate0() + "\n" + CPUPstate1();
+            Reg64CPU.Text = "63     59     55     51     47     43     39     35     31     27     23     19     15     11     7       3    0\n"
+                + COFVidString() + "\n" + CPUPstate0() + "\n" + CPUPstate1() + "\n" + CPUPstate2() + "\n" + CPUPstate3() + "\n" + CPUPstate4() + "\n" + CPUPstate5() + "\n" + CPUPstate6() + "\n" + CPUPstate7();
             Reg32NB.Text = "31     27     23     19     15     11     7       3    0\n" + NBPstate0() + "\n" + NBPstate1() + "\n" + ClockTiming() + "\n" + BIOSClock();
-            PCIDevices.Text = VoltageControl() + "\n" + DebugOutput()  + "\n" + IOInterface();
+            PCIDevices.Text = VoltageControl() + "\n" + DebugOutput() + "\n" + MaxPstate() + "\n";
             PStateReg1.Text = "";
             PStateReg2.Text = "";
             NbPStateReg1.Text = "";
             ClockReg.Text = "";
             BIOSReg.Text = "";
-            RegLabel64CPU.Text = "Bit numbering\nCOFVID 0071\nP-State0 0064\nP-State1 0065";
+            RegLabel64CPU.Text = "Bit numbering\nCOFVID 0071\nP-State0 0064\nP-State1 0065\nP-State2 0066\nP-State3 0067\nP-State4 0068\nP-State5 0069\nP-State6 006A\nP-State7 006B";
             RegLabel32NB.Text = "Bit numbering\nNB P-State0 D18F3xDC\nNB P-State1 D18F6x90\nClockTiming D18F3xD4\nBIOSClock D0F0xE4_x0130_80F1";
-            PCIDevicesLabel.Text = "D18F3x15C\nD0 00\nD1F0 90\nSMBus A0\nD18 C0\nIOCheck";
+            PCIDevicesLabel.Text = "D18F3x15C\nD0 00\nD1F0 90\nSMBus A0\nD18 C0\nMSRC001_0061 P-State";
             RegLabel4.Text = "";
             RegLabel5.Text = "";
             RegLabel12.Text = "";
@@ -187,6 +187,16 @@ namespace BrazosTweaker
             return text;
         }
 
+        public string MaxPstate()
+        {
+            string text = "";
+            ulong msr = Program.Ols.ReadMsr(0xC0010061u);
+            uint maxP = (uint)(msr >> 4 & 0x7);
+            uint minP = (uint)(msr & 0x7);
+            text += "MaxPState: " + maxP + " MinPState: " + minP;
+            return text;
+        }
+        
         public string COFVidString()
         {
             string text = "";
@@ -230,6 +240,71 @@ namespace BrazosTweaker
         {
             string text = "";
             ulong msr = Program.Ols.ReadMsr(0xC0010066u);
+            for (int i = 0; i < 64; i++)
+            {
+                text += (msr >> (63 - i) & 0x1).ToString();
+                if ((i + 1) % 4 == 0) text += " ";
+            }
+            text += "";
+            return text;
+        }
+
+        public string CPUPstate3()
+        {
+            string text = "";
+            ulong msr = Program.Ols.ReadMsr(0xC0010067u);
+            for (int i = 0; i < 64; i++)
+            {
+                text += (msr >> (63 - i) & 0x1).ToString();
+                if ((i + 1) % 4 == 0) text += " ";
+            }
+            text += "";
+            return text;
+        }
+
+        public string CPUPstate4()
+        {
+            string text = "";
+            ulong msr = Program.Ols.ReadMsr(0xC0010068u);
+            for (int i = 0; i < 64; i++)
+            {
+                text += (msr >> (63 - i) & 0x1).ToString();
+                if ((i + 1) % 4 == 0) text += " ";
+            }
+            text += "";
+            return text;
+        }
+
+        public string CPUPstate5()
+        {
+            string text = "";
+            ulong msr = Program.Ols.ReadMsr(0xC0010069u);
+            for (int i = 0; i < 64; i++)
+            {
+                text += (msr >> (63 - i) & 0x1).ToString();
+                if ((i + 1) % 4 == 0) text += " ";
+            }
+            text += "";
+            return text;
+        }
+
+        public string CPUPstate6()
+        {
+            string text = "";
+            ulong msr = Program.Ols.ReadMsr(0xC001006Au);
+            for (int i = 0; i < 64; i++)
+            {
+                text += (msr >> (63 - i) & 0x1).ToString();
+                if ((i + 1) % 4 == 0) text += " ";
+            }
+            text += "";
+            return text;
+        }
+
+        public string CPUPstate7()
+        {
+            string text = "";
+            ulong msr = Program.Ols.ReadMsr(0xC001006Bu);
             for (int i = 0; i < 64; i++)
             {
                 text += (msr >> (63 - i) & 0x1).ToString();
