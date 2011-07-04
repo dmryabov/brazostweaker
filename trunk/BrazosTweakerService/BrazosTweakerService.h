@@ -453,7 +453,7 @@ private:
 		DWORD lower, higher;
 
 		// get the max enabled hardware P-state from core 0
-		int maxEnabledPState = 4;
+		int maxEnabledPState = 2;
 		for (int i = 0; i < 5; i++)
 		{
 			const unsigned int msrIndex = 0xC0010064u + i;
