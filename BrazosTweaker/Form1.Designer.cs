@@ -294,7 +294,7 @@
 			this.MaximizeBox = false;
 			this.MinimumSize = new System.Drawing.Size(341, 252);
 			this.Name = "Form1";
-			this.Text = "BrazosTweaker V1.0.2";
+			this.Text = "BrazosTweaker V1.0.3";
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
 			this.tabControl1.ResumeLayout(false);
 			this.tabPageP0.ResumeLayout(false);
