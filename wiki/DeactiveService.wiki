@@ -1,0 +1,16 @@
+#summary How to deactivate the service
+
+= Why do I need to know this? =
+
+This page describes, what to do, in case your system doesn't boot into Windows anymore, because of the service.
+
+= Details =
+
+  # In order to disable the service, you need to boot Windows in "Safe mode". While doing this, the BrazosTweaker service doesn't get enabled.
+  # If Windows has booted succesfully in "Safe mode", you can click on the Windows-Start button and enter "Services" in the below line. Hit "Enter".
+  # Now you can see all installed services and should look for "BrazosTweaker service".
+  # The next thing is clicking right on the line from BrazosTweaker and select "Properties".
+  # On the most left tab (General?) look for line "Startup type" (or something similar). Switch from "Automatic" to "Manual".
+  # Now you can restart your system.
+  # Once Windows has been restarted, start BrazosTweaker and try to find the rootcause of the hangs (too low voltage for a certain PState?, bug in the code, etc.).
+  # If the problem was found and fixed, you can re-enable the service by starting with 2. and switching back to "Automatic".
