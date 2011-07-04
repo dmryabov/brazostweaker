@@ -37,7 +37,7 @@ Just check, while running the stress test, where the asterisk is! If you want to
 In case, the systems hangs during testing, you know the selected voltage was too low for that PState. Just simply hold the power button for a few second and your system restarts without the modified voltages. 
 After restart increase voltage a bit and start stressing the system again. I strongly suggest, not to use a voltage for later use, which is just one step away from, where it hung up. Please add about 25mV at least to have some margin.
 
-Once all that is done and everything runs smoothly, *and only in that case*, you can click on the "Service..." button. By setting that up, there will be a service in the background, which applies the adjusted voltages after coming out of sleep or while booting Win. 
+Once all that is done and everything runs smoothly, *and only in that case*, you can click on the "Service..." button. Before you read on, please consider looking at this: DeactiveService. By setting that up, there will be a service in the background, which applies the adjusted voltages after coming out of sleep or while booting Win. 
 You just need to click "Update" to get the current settings, check the selection box "Make custom P-state settings permanent" and hit "Apply".
 Now you are done.
 
