@@ -2,12 +2,15 @@
 
 = Introduction =
 
-Add your content here.
-
+Hier findet ihr die Beschreibung, wie man den Service deaktiviert, falls er beim normalen Booten, Windows zum Absturz bringt.
 
 = Details =
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+  # Um den Service zu deaktivieren (falls Windows nicht mehr normal lädt und zwischendrin abstürzt), muß man Windows im *abgesicherten* Modus starten. Dabei wird der BrazosTweaker Service nicht gestartet.
+  # Sobald Windows erfolgreich gestartet ist, auf Windows-Start klicken, danach in der untersten Zeile "Dienste" eingeben und Enter drücken.
+  # Nun sieht man eine Liste aller installierten Dienste, bei der man einfach BrazosTweaker sucht.
+  # Als nächstes in der Zeile BrazosTweaker mit der rechten Maustaste klicken und auf Eigenschaften gehen.
+  # Dann einfach auf dem Reiter "Allgemein" in der Zeile "Starttyp" schauen und "Automatisch" in "Manuell" ändern.
+  # Jetzt kann der Rechner neugestartet werden und sollte problemlos starten.
+  # Nach dem nächsten Windows Boot, BrazosTweaker starten und die Ursache für die Systemstabilität finden (zu niedrige Spannung bei einem PState, Bug im Programm, etc.)
+  # Falls das Problem behoben wurde, kann der Service wie oben beschrieben wieder auf "Automatisch" gestellt werden, damit er wieder aktiv ist.  
