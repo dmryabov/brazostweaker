@@ -25,11 +25,13 @@ Dann drück man auf "Apply" rechts unten. Damit werden diese Einstellungen erst 
 
 Wenn das alles klappt, sollte man Orthos downloaden. Damit kann man einen Stresstest durchführen, damit man weiß, ob die Einstellungen stabil sind. Ansonsten können zum Besipiel Blue Screens oder Einfrieren des Rechners vorkommen.
 
-Jeder Zustand sollte einzeln mit dem Stresstest überprüft werden. Das kann du mit den EnergieSchemen vom Energy Management erreichen.
-
-  * P0 testen -> Schema Hochleistung
-  * P1 testen -> Schema Ausgewogen
-  * P2 testen -> Schema Beste Energieeinsparung
+Jeder Zustand sollte einzeln mit dem Stresstest überprüft werden. 
+Um einen speziellen Zustand (PState)zu halten, kann man folgendermaßen vorgehen:
+  # Windows Taste drücken und unten links "Power Options" eingeben
+  # Dann sollte "Energieoptionen" aufgehen
+  # Bei "Ausbalanciert" -> "Energiesparplaneinstellungen ändern" klicken
+  # Unten "Erweiterte Energieeinstellungen ändern" klicken
+  # Runter scrollen bis Prozessorenergieverwaltung und dort kann Minimum und Maximum für die Frequenz in Prozent eingestellt werden. Einfach ein bisschen mit den Werten herumprobieren (Minimum = Maximum setzen), bis er im gewünschten Zustand bleibt.
 
 Sollte das Notebook bei den Tests einfrieren, ist das nicht schlimm. Dann war die Spannung etwas zu niedrig. Einfach lange den Power Knopf drücken und neu mit etwas höherer Spannung probieren (die oben angegebenen Spannungen sollten aber schon relativ sicher sein). Die eingestellten Spannungen im Tool sind noch nirgendwo fest eingestellt.
 
