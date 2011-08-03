@@ -32,6 +32,15 @@ One should stress each of the PStates separately. This can be achieved by modify
   * P1 testing -> Power Scheme Balanced
   * P2 testing -> Power Scheme Best Battery life
 
+On all other systems, you can do the following:
+  # Press Windows Key and enter "Power Options"
+  # Power Options should open up
+  # On "Balanced" -> click "Change plan settings"
+  # click below Link "Change advanced power settings" on the newly opened page
+  # Scroll down to "Processor power management" and click on the "+"
+  # Now you can play around with Minimum and Maximum processor state (put them to the same value, if you want to have a constant PState) 
+  # Note that these values are percentages, i.e. a value of 100% keeps your processor always in P0
+
 Just check, while running the stress test, where the asterisk is! If you want to test P1, the asterisk, should never go to P0, but while stopping the test, it can go to P2.
 
 In case, the systems hangs during testing, you know the selected voltage was too low for that PState. Just simply hold the power button for a few second and your system restarts without the modified voltages. 
