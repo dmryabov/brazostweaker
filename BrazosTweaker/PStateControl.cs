@@ -183,7 +183,7 @@ namespace BrazosTweaker
                 }
                 else
                 {
-                    VidNumericUpDown.Value = 1;
+                    VidNumericUpDown.Value = (decimal)0.4;
                     FSBNumericUpDown.Value = 100;
                 }
             }

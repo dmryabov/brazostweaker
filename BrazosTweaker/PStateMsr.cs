@@ -63,28 +63,42 @@ namespace BrazosTweaker
                 
             if (pstate < 3)
             {
-                uint cpuDidLSD = (value >> 0) & 0x0F;
-                uint cpuDidMSD = (value >> 4) & 0x1F;
-                uint cpuVid = (value >> 9) & 0x7F;
-     
-                double Div = cpuDidMSD + (cpuDidLSD * 0.25) + 1;
-                double DivPLL = cpuDidMSD + (cpuDidLSD * 0.25) + 1;
-                if (maxDiv == 16 && Div < 2) //E-350 seems to restrict PLL frequencies higher than 1.6GHz
+                if (pstate <= K10Manager.GetHighestPState())
                 {
-                    DivPLL = 2; 
+                    uint cpuDidLSD = (value >> 0) & 0x0F;
+                    uint cpuDidMSD = (value >> 4) & 0x1F;
+                    uint cpuVid = (value >> 9) & 0x7F;
+
+                    double Div = cpuDidMSD + (cpuDidLSD * 0.25) + 1;
+                    double DivPLL = cpuDidMSD + (cpuDidLSD * 0.25) + 1;
+                    if (maxDiv == 16 && Div < 2) //E-350 seems to restrict PLL frequencies higher than 1.6GHz
+                    {
+                        DivPLL = 2;
+                    }
+                    else if (maxDiv == 24 && Div < 4) //C-50 seems to restrict PLL frequencies higher than 1.0GHz
+                    {
+                        DivPLL = 4;
+                    }
+                    var msr = new PStateMsr()
+                    {
+                        Divider = Div,
+                        Vid = 1.55 - 0.0125 * cpuVid,
+                        FSB = fsb,
+                        PLL = (16 + maxDiv) / DivPLL * fsb
+                    };
+                    return msr;
                 }
-                else if (maxDiv == 24 && Div < 4) //C-50 seems to restrict PLL frequencies higher than 1.0GHz
+                else
                 {
-                    DivPLL = 4;
+                    var msr = new PStateMsr()
+                    {
+                        Divider = 10,
+                        Vid = 0.4,
+                        FSB = 100,
+                        PLL = 1000
+                    };
+                    return msr;
                 }
-                var msr = new PStateMsr()
-                {
-                    Divider = Div,
-                    Vid = 1.55 - 0.0125 * cpuVid,
-                    FSB = fsb,
-                    PLL = (16 + maxDiv) / DivPLL * fsb
-                };
-                return msr;
             }
             else if (pstate == 3)
             {
@@ -128,10 +142,10 @@ namespace BrazosTweaker
             {
                 var msr = new PStateMsr()
                 {
-                    Divider = 0,
-                    Vid = 1,
+                    Divider = 10,
+                    Vid = 0.4,
                     FSB = 100,
-                    PLL = 1600
+                    PLL = 1000
                 };
                 return msr;
             }
