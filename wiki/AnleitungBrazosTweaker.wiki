@@ -18,7 +18,9 @@ Mit dem Tool kann man jetzt die Spannung (CPU VID) für jeden dieser Zustände e
 Nun können als erstes folgende Einstellungen vorgenommen werden (diese funktionieren bei ziemlich vielen Usern)
 
   * P0 - 1.225V
+
   * P1 - 1.05V
+
   * P2 - 0.85V
 
 Dann drück man auf "Apply" rechts unten. Damit werden diese Einstellungen erst einmal temporär übernommen. Überprüft werden kann das mit dem sehr guten Programm CPU-Z.
