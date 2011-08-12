@@ -47,8 +47,12 @@
 			this.nbp1StateControl = new BrazosTweaker.PStateControl();
             this.tabPageStatus = new System.Windows.Forms.TabPage();
             this.statusinfo = new BrazosTweaker.StatusControl();
+            this.paypal = new System.Windows.Forms.LinkLabel();
+            this.ecread = new System.Windows.Forms.TextBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-			this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.timer2 = new System.Windows.Forms.Timer(this.components);
+            this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            
 			this.tabControl1.SuspendLayout();
 			this.tabPageP0.SuspendLayout();
 			this.tabPageP1.SuspendLayout();
@@ -62,7 +66,7 @@
 			// 
 			this.applyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.applyButton.AutoSize = true;
-			this.applyButton.Location = new System.Drawing.Point(363, 167);
+			this.applyButton.Location = new System.Drawing.Point(363, 225);
 			this.applyButton.Margin = new System.Windows.Forms.Padding(4);
 			this.applyButton.Name = "applyButton";
 			this.applyButton.Size = new System.Drawing.Size(107, 33);
@@ -71,14 +75,42 @@
 			this.toolTip1.SetToolTip(this.applyButton, "Apply the changes to the P-state settings.\r\nThey will last until the next reset.");
 			this.applyButton.UseVisualStyleBackColor = true;
 			this.applyButton.Click += new System.EventHandler(this.applyButton_Click);
-			// 
+            // 
+            // paypal
+            // 
+            this.paypal.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.paypal.AutoSize = true;
+            //this.paypal.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.paypal.Location = new System.Drawing.Point(16, 4);
+            this.paypal.Margin = new System.Windows.Forms.Padding(4);
+            this.paypal.Name = "paypal";
+            this.paypal.Text = "Please donate to support development.";
+            this.paypal.Size = new System.Drawing.Size(100, 30);
+            this.paypal.TabIndex = 6;
+            this.paypal.Click += new System.EventHandler(this.paypal_Click);
+            // 
+            // readings from EC
+            // 
+            this.ecread.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)
+                        | System.Windows.Forms.AnchorStyles.Left)));
+            this.ecread.AutoSize = true;
+            //this.paypal.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ecread.Location = new System.Drawing.Point(16, 24);
+            this.ecread.Margin = new System.Windows.Forms.Padding(4);
+            this.ecread.Name = "temp, fan readings";
+            this.ecread.Text = "";
+            this.ecread.Size = new System.Drawing.Size(100, 30);
+            this.ecread.TabIndex = 7;
+            this.ecread.MinimumSize = new System.Drawing.Size(300, 20);
+            // 
 			// powerSchemesComboBox
 			// 
 			this.powerSchemesComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
 			this.powerSchemesComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.powerSchemesComboBox.FormattingEnabled = true;
-			this.powerSchemesComboBox.Location = new System.Drawing.Point(16, 172);
+			this.powerSchemesComboBox.Location = new System.Drawing.Point(16, 230);
 			this.powerSchemesComboBox.Margin = new System.Windows.Forms.Padding(4);
 			this.powerSchemesComboBox.Name = "powerSchemesComboBox";
 			this.powerSchemesComboBox.Size = new System.Drawing.Size(220, 24);
@@ -89,7 +121,7 @@
 			// 
 			this.serviceButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.serviceButton.AutoSize = true;
-			this.serviceButton.Location = new System.Drawing.Point(248, 167);
+			this.serviceButton.Location = new System.Drawing.Point(248, 225);
 			this.serviceButton.Margin = new System.Windows.Forms.Padding(4);
 			this.serviceButton.Name = "serviceButton";
 			this.serviceButton.Size = new System.Drawing.Size(107, 33);
@@ -98,7 +130,7 @@
 			this.toolTip1.SetToolTip(this.serviceButton, "Configure the BrazosTweaker service.");
 			this.serviceButton.UseVisualStyleBackColor = true;
 			this.serviceButton.Click += new System.EventHandler(this.serviceButton_Click);
-			// 
+            // 
 			// toolTip1
 			// 
 			this.toolTip1.AutoPopDelay = 30000;
@@ -117,14 +149,14 @@
 			this.tabControl1.Controls.Add(this.tabPageNbP0);
 			this.tabControl1.Controls.Add(this.tabPageNbP1);
             this.tabControl1.Controls.Add(this.tabPageStatus);
-			this.tabControl1.Location = new System.Drawing.Point(16, 15);
+            this.tabControl1.Location = new System.Drawing.Point(16, 55);
 			this.tabControl1.Margin = new System.Windows.Forms.Padding(4);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(453, 138);
+			this.tabControl1.Size = new System.Drawing.Size(453, 160);
 			this.tabControl1.TabIndex = 5;
 			this.toolTip1.SetToolTip(this.tabControl1, "P(erformance)-states of your CPU/NB.\r\nP0 is the maximum performance state.");
-			// 
+            // // 
 			// tabPageP0
 			// 
 			this.tabPageP0.Controls.Add(this.p0StateControl);
@@ -274,7 +306,13 @@
 			this.timer1.Enabled = true;
 			this.timer1.Interval = 250;
 			this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-			// 
+            // 
+            // timer2
+            // 
+            this.timer2.Enabled = true;
+            this.timer2.Interval = 2000;
+            this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
+            // 
 			// notifyIcon
 			// 
 			this.notifyIcon.Text = "BrazosTweaker";
@@ -284,17 +322,19 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(485, 215);
+			this.ClientSize = new System.Drawing.Size(485, 265);
 			this.Controls.Add(this.tabControl1);
 			this.Controls.Add(this.serviceButton);
 			this.Controls.Add(this.powerSchemesComboBox);
 			this.Controls.Add(this.applyButton);
-			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Controls.Add(this.paypal);
+            this.Controls.Add(this.ecread);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Margin = new System.Windows.Forms.Padding(4);
 			this.MaximizeBox = false;
-			this.MinimumSize = new System.Drawing.Size(341, 252);
+			this.MinimumSize = new System.Drawing.Size(470, 310);
 			this.Name = "Form1";
-			this.Text = "BrazosTweaker V1.0.3";
+			this.Text = "BrazosTweaker V1.0.4";
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
 			this.tabControl1.ResumeLayout(false);
 			this.tabPageP0.ResumeLayout(false);
@@ -309,7 +349,11 @@
 			this.tabPageNbP1.PerformLayout();
             this.tabPageStatus.ResumeLayout(false);
             this.tabPageStatus.PerformLayout();
-            this.ResumeLayout(false);
+            this.paypal.ResumeLayout(false);
+            this.paypal.PerformLayout();
+            this.ecread.ResumeLayout(false);
+            this.ecread.PerformLayout();
+			this.ResumeLayout(false);
 			this.PerformLayout();
 
 		}
@@ -321,9 +365,12 @@
 		private System.Windows.Forms.Button serviceButton;
 		private System.Windows.Forms.ToolTip toolTip1;
 		private System.Windows.Forms.Timer timer1;
-		private System.Windows.Forms.NotifyIcon notifyIcon;
+        private System.Windows.Forms.Timer timer2;
+        private System.Windows.Forms.NotifyIcon notifyIcon;
 		private System.Windows.Forms.TabControl tabControl1;
-		private System.Windows.Forms.TabPage tabPageP0;
+        private System.Windows.Forms.LinkLabel paypal;
+        private System.Windows.Forms.TextBox ecread;
+        private System.Windows.Forms.TabPage tabPageP0;
 		private PStateControl p0StateControl;
 		private System.Windows.Forms.TabPage tabPageP1;
 		private PStateControl p1StateControl;
