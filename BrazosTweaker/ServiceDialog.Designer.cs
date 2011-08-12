@@ -79,9 +79,9 @@
 			this.pStatesLabel.Name = "pStatesLabel";
 			this.pStatesLabel.Size = new System.Drawing.Size(264, 65);
 			this.pStatesLabel.TabIndex = 1;
-			this.pStatesLabel.Text = "P0: 12.5|12.5|12.5|12.5|12.5|12.5 @ 1.4625V/1.3125V\r\nP1: 12|12|12|12 @ 1.4625V/1." +
-				"3125V\r\nP2: 12|12|12|12 @ 1.4625V/1.3125V\r\nP3: 12|12|12|12 @ 1.4625V/1.3125V\r\nP4:" +
-				" 12|12|12|12 @ 1.4625V/1.3125V\r\n";
+            this.pStatesLabel.Text = "P0: 2|2 @ 1.225V/100MHz/1600MHz\r\nP1: 2.5|2.5 @ 1.05V/100MHz/1280MHz\r\n" +
+                "P2: 4|4 @ 0.85V/100MHz/800MHz\r\nP3: 6|6 @ 0.85V/100MHz/533MHz\r\nP4:" +
+                " 9.5|9.5 @ 0.8V/100MHz/336MHz\r\n";
 			// 
 			// toolTip1
 			// 
