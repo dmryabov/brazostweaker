@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace BrazosTweaker
 {
@@ -17,6 +18,82 @@ namespace BrazosTweaker
         private bool _modified;
 
         private int _index = 0; // 0
+
+        //private readonly SMBIOS smbios;
+        
+        SMBIOS smbios = new SMBIOS();
+
+        // Registers of the embedded controller
+        byte EC_DATAPORT = 0x62;	// EC data io-port - port for the EC register value
+        byte EC_CTRLPORT = 0x66;	// EC control io-port - port for the EC register index
+
+        // Embedded controller status register bits
+        byte EC_STAT_OBF = 0x01;    // Output buffer full 
+        byte EC_STAT_IBF = 0x02;    // Input buffer full 
+        byte EC_STAT_CMD = 0x08;    // Last write was a command write (0=data) 
+
+        // Embedded controller commands
+        // (write to EC_CTRLPORT to initiate read/write operation)
+        byte EC_CTRLPORT_READ = 0x80;	
+        byte EC_CTRLPORT_WRITE = 0x81;
+        byte EC_CTRLPORT_QUERY = 0x84;
+
+        byte TP_ECOFFSET_FAN = 0x2F;	// 1 byte (binary xyzz zzz)
+        byte TP_ECOFFSET_FANSPEED = 0x94; // 16 bit word, lo/hi byte
+
+        /*const char * SENSORNAME[]= {
+	    // 78-7F (state index 0-7)
+	    "CPU", // main processor
+	    "APS", // harddisk protection gyroscope
+	    "PCM", // under PCMCIA slot (front left)
+	    "GPU", // graphical processor
+	    "BAT", // inside T43 battery
+	    "X7D", // usually n/a
+	    "BAT", // inside T43 battery
+	    "X7F", // usually n/a
+
+	    // C0-C4 (state index 8-11)
+	    "BUS", // unknown
+	    "PCI", // mini-pci, WLAN, southbridge area
+	    "PWR", // power supply (get's hot while charging battery)
+	    "XC3", // usually n/a
+
+    	// future
+	    "",
+	    "",
+	    "",
+	    "",
+	    ""
+        */
+
+        //byte[] SENSORADDR = {0xA8 , 0xA9, 0xAA, 0xE8, 0x7C, 0x7D, 0x7E, 0x7F, 0xC0, 0xC1, 0xC2, 0xC3};
+                           //Core   Temp1 Temp2
+        byte[] SENSORADDR = { 0xA8, 0xA9, 0xAA };
+                            //Core   Temp1 Temp2
+
+        public string GetVendor()
+        {
+            string vendor = "Unknown"; 
+            if (smbios.Board != null)
+            {
+                vendor = smbios.BIOS.Vendor.ToString();
+            }
+            return vendor;
+        }
+
+        public string GetReport()
+        {
+            StringBuilder output = new StringBuilder();
+            if (smbios.Board != null)
+            {
+                output.AppendLine(smbios.BIOS.Vendor.ToString());
+                output.AppendLine(smbios.BIOS.Version.ToString());
+                output.AppendLine(smbios.Board.Manufacturer.ToString());
+                output.AppendLine(smbios.Board.ProductName.ToString());
+            }
+            return output.ToString();
+            //return test;
+        }
 
         /// <summary>
         /// Gets or sets the associated hardware P-state index (0-4).
@@ -60,6 +137,10 @@ namespace BrazosTweaker
             return (_optimalWidth - this.Width);
         }
 
+        public string GetECreadings()
+        {
+            return ECReadings();
+        }
         /// <summary>
         /// Loads the P-state settings from each core's MSR.
         /// </summary>
@@ -67,16 +148,22 @@ namespace BrazosTweaker
         {
             Reg64CPU.Text = "63     59     55     51     47     43     39     35     31     27     23     19     15     11     7       3    0\n"
                 + COFVidString() + "\n" + CPUPstate0() + "\n" + CPUPstate1() + "\n" + CPUPstate2() + "\n" + CPUPstate3() + "\n" + CPUPstate4() + "\n" + CPUPstate5() + "\n" + CPUPstate6() + "\n" + CPUPstate7();
+            //Reg64CPU.Text = "";
             Reg32NB.Text = "31     27     23     19     15     11     7       3    0\n" + NBPstate0() + "\n" + NBPstate1() + "\n" + ClockTiming() + "\n" + BIOSClock();
-            PCIDevices.Text = VoltageControl() + "\n" + DebugOutput() + "\n" + MaxPstate() + "\n";
+            //Reg32NB.Text = "";
+            PCIDevices.Text = VoltageControl() + "\n" + DebugOutput() + "\n" + MaxPstate() + "\n" + GetReport();
+            //PCIDevices.Text = IOInterface();
             PStateReg1.Text = "";
             PStateReg2.Text = "";
             NbPStateReg1.Text = "";
             ClockReg.Text = "";
             BIOSReg.Text = "";
             RegLabel64CPU.Text = "Bit numbering\nCOFVID 0071\nP-State0 0064\nP-State1 0065\nP-State2 0066\nP-State3 0067\nP-State4 0068\nP-State5 0069\nP-State6 006A\nP-State7 006B";
+            //RegLabel64CPU.Text = "";
             RegLabel32NB.Text = "Bit numbering\nNB P-State0 D18F3xDC\nNB P-State1 D18F6x90\nClockTiming D18F3xD4\nBIOSClock D0F0xE4_x0130_80F1";
-            PCIDevicesLabel.Text = "D18F3x15C\nD0 00\nD1F0 90\nSMBus A0\nD18 C0\nMSRC001_0061 P-State";
+            //RegLabel32NB.Text = "";
+            PCIDevicesLabel.Text = "D18F3x15C\nD0 00\nD1F0 90\nSMBus A0\nD18 C0\nMSRC001_0061 P-State\nBIOS vendor\nBIOS version\nMoBo vendor\nMoBo name";
+            //PCIDevicesLabel.Text = "IOOutput";
             RegLabel4.Text = "";
             RegLabel5.Text = "";
             RegLabel12.Text = "";
@@ -116,6 +203,26 @@ namespace BrazosTweaker
             return conv;
         }
 
+        private bool WaitPortStatus(int bits, int onoff = 0, int timeout = 1000)
+        {
+            bool result = false;
+            ushort port = EC_CTRLPORT;
+            int tick = 10;
+            
+            for (int time = 0; time < timeout; time += tick)
+            {
+                byte data = Program.Ols.ReadIoPortByte(port);
+                int flagstate = (data & bits);
+                if (flagstate == onoff)
+                {
+                    result = true;
+                    break;
+                }
+                Thread.Sleep(tick);
+            }
+            return result;
+        }
+
         private uint ReadWord(ushort regPort, ushort valPort, byte regIndex)
         {
             Program.Ols.WriteIoPortByte(regPort, regIndex);
@@ -133,31 +240,79 @@ namespace BrazosTweaker
             Program.Ols.WriteIoPortByte(valPort, value);
         }
 
-        public string IOInterface()
+
+        public byte ReadIOByte(byte offset)
         {
-            byte superIOReg = 0x2E; // port for the SuperIO register index
-		    byte superIOVal = 0x2F; // port for the SuperIO register value 
-            uint _isaAddress;
-		    // enter the MB PnP mode
-		    Program.Ols.WriteIoPortByte(superIOReg, 0x87);
-            Program.Ols.WriteIoPortByte(superIOReg, 0x01);
-            Program.Ols.WriteIoPortByte(superIOReg, 0x55);
-            Program.Ols.WriteIoPortByte(superIOReg, 0x55);
+            byte data = 0;
+            // wait for IBF and OBF to clear
+            bool ready = WaitPortStatus(EC_STAT_IBF | EC_STAT_OBF, 0);
+            if (ready)
+            {
+                // tell 'em we want to "READ"
+                Program.Ols.WriteIoPortByte(EC_CTRLPORT, EC_CTRLPORT_READ);
+                // wait for IBF to clear (command byte removed from EC's input queue)
+                ready = WaitPortStatus(EC_STAT_IBF, 0);
+                if (ready)
+                {
+                    // tell 'em where we want to read from
+                    Program.Ols.WriteIoPortByte(EC_DATAPORT, offset);
+                    ready = WaitPortStatus(EC_STAT_IBF, 0);
+                    if (ready)
+                    {
+                        // read result (EC byte at offset)
+                        data = Program.Ols.ReadIoPortByte(EC_DATAPORT);
+                    }
+                }
+            }
+            return data;
+        }
+			
+		public string IOInterface()
+        {
+            string text = "";
+            byte loFan = ReadIOByte(TP_ECOFFSET_FANSPEED);
+            byte hiFan = ReadIOByte((byte)(TP_ECOFFSET_FANSPEED + 1));
+            //ushort fanSpeed = (ushort)((hiFan << 8) | (loFan & 0xFF));
+            //if (fanSpeed != 0) { fanSpeed = (ushort)(1350000 / (fanSpeed * 2)); }
+            text += "Fan1: " + loFan + " Fan2: " + hiFan; 
+            for (int i = 0; i < 3; i++)
+            { // temp sensors 0x78 - 0x7f
+                text += " " + i + ": " + ReadIOByte(SENSORADDR[i]);
+            }
+            /*for (int i = 0; i < 8; i++)
+            {
+                text += (done >> (7 - i) & 0x1).ToString();
+                if ((i + 1) % 4 == 0) text += " ";
+            }*/
+            return text;
+        }
 
-		    // check the device ID in registers 0x20 and 0x21
-		    uint deviceID = ReadWord(superIOReg, superIOVal, 0x20);
-		    //if ((deviceID >> 8) != 0x87)
-            //    throw new ArgumentOutOfRangeException("No IT87xxF chip found.");
-		    // select logical device #4, the environment controller, by writing 0x04 to register 0x07
-            WriteByte(superIOReg, superIOVal, 0x07, 0x04);
+        public string ECReadings()
+        {
+            if (GetVendor().Equals("LENOVO"))
+            {
+                string text = "";
+                //temps 0xA8, 0xA9, 0xAA
+                text += " APU: " + ReadIOByte(SENSORADDR[0]) + "°C ";
+                //text += "MB1: " + ReadIOByte(SENSORADDR[1]) + "°C ";
+                text += "MoBo: " + ReadIOByte(SENSORADDR[2]) + "°C ";
 
-		    // read the environment controller's ISA address from registers 0x60 and 0x61
-		    // the register port for the controller is _isaAddress + 0x05, the value port _isaAddress + 0x06
-            _isaAddress = ReadWord(superIOReg, superIOVal, 0x60);
+                byte hiFan = ReadIOByte((byte)(TP_ECOFFSET_FANSPEED + 1));
+                int fanspeed = 0;
+                if (hiFan != 255) { fanspeed = 8500 - (50 * hiFan); }
+                text += "Fan: " + fanspeed + " RPM";
 
-		    // exit the MB PnP mode
-            WriteByte(superIOReg, superIOVal, 0x02, 0x02);
-	    return "Check";
+                /*for (int i = 0; i < 8; i++)
+                {
+                    text += (done >> (7 - i) & 0x1).ToString();
+                    if ((i + 1) % 4 == 0) text += " ";
+                }*/
+                return text;
+            }
+            else
+            {
+                return "Temp/Fan readings for " + GetVendor() + " not supported yet.";
+            }
         }
 
         public string DebugOutput()
@@ -366,7 +521,6 @@ namespace BrazosTweaker
             }
             text += "";
             return text;
-        }
-        
+        }        
     }
 }
