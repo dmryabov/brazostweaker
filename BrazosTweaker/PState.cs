@@ -9,9 +9,9 @@ namespace BrazosTweaker
 	public class PState
 	{
 		private static readonly int _numCores = System.Environment.ProcessorCount;
+        private static int _maxPstate = K10Manager.GetHighestPState();
 
-		private PStateMsr[] _msrs = new PStateMsr[_numCores];
-
+        private PStateMsr[] _msrs = new PStateMsr[_numCores];
 
 		/// <summary>
 		/// Gets the per-core settings.
@@ -60,7 +60,7 @@ namespace BrazosTweaker
                 int boostedStates = K10Manager.GetNumBoostedStates();
                 int indexSw = Math.Max(0, index - boostedStates);
 
-                int tempPStateHw = (index <= boostedStates ? K10Manager.GetHighestPState() : 0);
+                int tempPStateHw = (index <= boostedStates ? _maxPstate : 0);
                 int tempPStateSw = Math.Max(0, tempPStateHw - boostedStates);
 
                 // switch temporarily to the highest thread priority
@@ -256,7 +256,7 @@ namespace BrazosTweaker
 		{
 			var sb = new System.Text.StringBuilder();
 
-            double maxVid = 0, maxFSB = 0;
+            double maxVid = 0, maxCLK = 0;
             int maxPLL = 0;
 			for (int i = 0; i < _msrs.Length; i++)
 			{
@@ -265,11 +265,11 @@ namespace BrazosTweaker
 					sb.Append('|');
 
                 maxVid = Math.Max(maxVid, _msrs[i].Vid);
-                maxFSB = Math.Max(maxFSB, _msrs[i].FSB);
-                maxPLL = (int)Math.Max(maxFSB, _msrs[i].PLL);
+                maxCLK = Math.Max(maxCLK, _msrs[i].CLK);
+                maxPLL = (int)Math.Max(maxCLK, _msrs[i].PLL);
 			}
 
-            sb.AppendFormat(" @ {0}V/{1}MHz/{2}MHz", maxVid, maxFSB, maxPLL);
+            sb.AppendFormat(" @ {0}V/{1}MHz/{2}MHz", maxVid, maxCLK, maxPLL);
 
 			return sb.ToString();
 		}
