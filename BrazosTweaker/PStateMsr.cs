@@ -20,7 +20,7 @@ namespace BrazosTweaker
 		/// <summary>
 		/// Bus speed (0 ... 200MHz).
 		/// </summary>
-		public double FSB { get; set; }
+		public double CLK { get; set; }
 
         /// <summary>
         /// Core / GPU frequency.
@@ -59,7 +59,7 @@ namespace BrazosTweaker
 		{
             //uint maxDiv = (uint)K10Manager.MaxCOF();
             uint maxDiv = (uint)K10Manager.CurrCOF();
-            uint fsb = (uint)K10Manager.GetBIOSBusSpeed();
+            uint clk = (uint)K10Manager.GetBIOSBusSpeed();
                 
             if (pstate < 3)
             {
@@ -83,8 +83,8 @@ namespace BrazosTweaker
                     {
                         Divider = Div,
                         Vid = 1.55 - 0.0125 * cpuVid,
-                        FSB = fsb,
-                        PLL = (16 + maxDiv) / DivPLL * fsb
+                        CLK = clk,
+                        PLL = (16 + maxDiv) / DivPLL * clk
                     };
                     return msr;
                 }
@@ -94,7 +94,7 @@ namespace BrazosTweaker
                     {
                         Divider = 10,
                         Vid = 0.4,
-                        FSB = 100,
+                        CLK = 100,
                         PLL = 1000
                     };
                     return msr;
@@ -114,8 +114,8 @@ namespace BrazosTweaker
                 {
                     Divider = nclkdiv,
                     Vid = 1.55 - 0.0125 * nbVid,
-                    FSB = fsb,
-                    PLL = (16 + maxDiv) / nclkdiv * fsb
+                    CLK = clk,
+                    PLL = (16 + maxDiv) / nclkdiv * clk
                 };
                 return msr;
             }
@@ -133,8 +133,8 @@ namespace BrazosTweaker
                 {
                     Divider = nclkdiv,
                     Vid = 1.55 - 0.0125 * nbVid,
-                    FSB = fsb,
-                    PLL = (16 + maxDiv) / nclkdiv * fsb
+                    CLK = clk,
+                    PLL = (16 + maxDiv) / nclkdiv * clk
                 };
                 return msr;
             }
@@ -144,7 +144,7 @@ namespace BrazosTweaker
                 {
                     Divider = 10,
                     Vid = 0.4,
-                    FSB = 100,
+                    CLK = 100,
                     PLL = 1000
                 };
                 return msr;
@@ -160,7 +160,7 @@ namespace BrazosTweaker
             {
                 if (Divider < 1 || Divider > 31.5) throw new ArgumentOutOfRangeException("Divider");
                 if (Vid <= 0 || Vid > 1.55) throw new ArgumentOutOfRangeException("Vid");
-                if (FSB <= 0 || FSB > 200) throw new ArgumentOutOfRangeException("FSB");
+                if (CLK <= 0 || CLK > 200) throw new ArgumentOutOfRangeException("CLK");
 
                 uint cpuDidMSD, cpuDidLSD;
                 cpuDidMSD = (uint)Math.Abs(Divider - 1);
@@ -174,7 +174,7 @@ namespace BrazosTweaker
             }
             else if (pstate == 3)
             {
-                //K10Manager.SetBIOSBusSpeed((uint)FSB);
+                //K10Manager.SetBIOSBusSpeed((uint)CLK);
                 uint nbVid = (uint)Math.Round((1.55 - Vid) / 0.0125);
                 //Divider
                 //NCLK Div 2-16 ind 0.25 steps / Div 16-32 in 0.5 steps / Div 32-63 in 1.0 steps
@@ -184,7 +184,7 @@ namespace BrazosTweaker
             }
             else if (pstate == 4)
             {
-                //K10Manager.SetBIOSBusSpeed((uint)FSB);
+                //K10Manager.SetBIOSBusSpeed((uint)CLK);
                 uint nbVid = (uint)Math.Round((1.55 - Vid) / 0.0125);
                 //Divider
                 //NCLK Div 2-16 ind 0.25 steps / Div 16-32 in 0.5 steps / Div 32-63 in 1.0 steps

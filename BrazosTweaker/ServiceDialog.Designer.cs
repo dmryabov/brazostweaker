@@ -106,7 +106,7 @@
 			this.enableCustomCnQCheckBox.UseMnemonic = false;
 			this.enableCustomCnQCheckBox.UseVisualStyleBackColor = true;
 			// 
-			// FSBlabel
+			// CLKlabel
 			// 
 			this.label3.Anchor = System.Windows.Forms.AnchorStyles.Left;
 			this.label3.AutoSize = true;
@@ -114,7 +114,7 @@
 			this.label3.ForeColor = System.Drawing.Color.DarkRed;
 			this.label3.Location = new System.Drawing.Point(27, 173);
 			this.label3.Margin = new System.Windows.Forms.Padding(3, 6, 3, 6);
-			this.label3.Name = "FSBlabel";
+			this.label3.Name = "CLKlabel";
 			this.label3.Size = new System.Drawing.Size(357, 13);
 			this.label3.TabIndex = 5;
 			this.label3.Text = "IMPORTANT: Disable Cool & Quiet in the BIOS menu for proper operation!";

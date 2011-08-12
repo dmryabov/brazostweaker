@@ -75,7 +75,7 @@ namespace BrazosTweaker
         /// <summary>
         /// Sets the bus speed controlled by BIOS.
         /// </summary>
-        public static int SetBIOSBusSpeed(uint fsb)
+        public static int SetBIOSBusSpeed(uint clk)
         {
             Program.Ols.WritePciConfig(0x00, 0xE0, 0x013080F1);
             //D18 Device -> C0
@@ -85,7 +85,7 @@ namespace BrazosTweaker
             // value of interest: D0F0xE4_x0130_80F1[ClockRate]
             uint settings = Program.Ols.ReadPciConfig(0x00, 0xE4);
             settings = settings >> 8; //erasing 8 lowest significant bits
-            settings = settings << 8 | fsb; //(settings SwitchToPState 101MHz)
+            settings = settings << 8 | clk; //(settings SwitchToPState 101MHz)
             Program.Ols.WritePciConfig(0x00, 0xE4, settings);
             return (int)(settings & 0xFF);
         }
