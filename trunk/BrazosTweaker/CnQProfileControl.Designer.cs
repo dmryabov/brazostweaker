@@ -279,12 +279,12 @@
             0,
             0});
 			// 
-			// FSBlabel
+			// CLKlabel
 			// 
 			this.label3.Anchor = System.Windows.Forms.AnchorStyles.Left;
 			this.label3.AutoSize = true;
 			this.label3.Location = new System.Drawing.Point(3, 55);
-			this.label3.Name = "FSBlabel";
+			this.label3.Name = "CLKlabel";
 			this.label3.Size = new System.Drawing.Size(81, 13);
 			this.label3.TabIndex = 4;
 			this.label3.Text = "P-state bounds:";

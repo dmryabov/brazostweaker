@@ -31,16 +31,16 @@
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PStateControl));
 			this.Cofstate = new System.Windows.Forms.Label();
-			this.FSBNumericUpDown = new System.Windows.Forms.NumericUpDown();
+			this.CLKNumericUpDown = new System.Windows.Forms.NumericUpDown();
 			this.refreshButton = new System.Windows.Forms.Button();
 			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
 			this.VidNumericUpDown = new System.Windows.Forms.NumericUpDown();
 			this.tableLayoutPanelPstates = new System.Windows.Forms.TableLayoutPanel();
             this.VIDlabel = new System.Windows.Forms.Label();
-			this.FSBlabel = new System.Windows.Forms.Label();
+			this.CLKlabel = new System.Windows.Forms.Label();
             this.pllfreq = new System.Windows.Forms.Label();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-			((System.ComponentModel.ISupportInitialize)(this.FSBNumericUpDown)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.CLKNumericUpDown)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.VidNumericUpDown)).BeginInit();
 			this.tableLayoutPanelPstates.SuspendLayout();
             this.SuspendLayout();
@@ -67,21 +67,21 @@
             this.pllfreq.TabIndex = 7;
             this.pllfreq.Text = "Freq";
             // 
-			// FSBNumericUpDown
+			// CLKNumericUpDown
 			// 
-			this.FSBNumericUpDown.Anchor = System.Windows.Forms.AnchorStyles.Left;
-			this.FSBNumericUpDown.AutoSize = true;
-			this.FSBNumericUpDown.DecimalPlaces = 0;
-			this.FSBNumericUpDown.Increment = new decimal(new int[] {10000,0,0,262144});
-			this.FSBNumericUpDown.Location = new System.Drawing.Point(94, 51);
-			this.FSBNumericUpDown.Margin = new System.Windows.Forms.Padding(4);
-			this.FSBNumericUpDown.Maximum = new decimal(new int[] {155,0,0,131072});
-			this.FSBNumericUpDown.Minimum = new decimal(new int[] {125,0,0,262144});
-			this.FSBNumericUpDown.Name = "FSBNumericUpDown";
-			this.FSBNumericUpDown.Size = new System.Drawing.Size(68, 22);
-			this.FSBNumericUpDown.TabIndex = 5;
-			this.toolTip1.SetToolTip(this.FSBNumericUpDown, resources.GetString("FSBNumericUpDown.ToolTip"));
-			this.FSBNumericUpDown.Value = new decimal(new int[] {1225,0,0,196608});
+			this.CLKNumericUpDown.Anchor = System.Windows.Forms.AnchorStyles.Left;
+			this.CLKNumericUpDown.AutoSize = true;
+			this.CLKNumericUpDown.DecimalPlaces = 0;
+			this.CLKNumericUpDown.Increment = new decimal(new int[] {10000,0,0,262144});
+			this.CLKNumericUpDown.Location = new System.Drawing.Point(94, 51);
+			this.CLKNumericUpDown.Margin = new System.Windows.Forms.Padding(4);
+			this.CLKNumericUpDown.Maximum = new decimal(new int[] {155,0,0,131072});
+			this.CLKNumericUpDown.Minimum = new decimal(new int[] {125,0,0,262144});
+			this.CLKNumericUpDown.Name = "CLKNumericUpDown";
+			this.CLKNumericUpDown.Size = new System.Drawing.Size(68, 22);
+			this.CLKNumericUpDown.TabIndex = 5;
+			this.toolTip1.SetToolTip(this.CLKNumericUpDown, resources.GetString("CLKNumericUpDown.ToolTip"));
+			this.CLKNumericUpDown.Value = new decimal(new int[] {1225,0,0,196608});
 			// 
 			// refreshButton
 			// 
@@ -132,10 +132,10 @@
 			this.tableLayoutPanelPstates.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
 			this.tableLayoutPanelPstates.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
 			this.tableLayoutPanelPstates.Controls.Add(this.VIDlabel, 0, 1);
-			this.tableLayoutPanelPstates.Controls.Add(this.FSBlabel, 0, 2);
+			this.tableLayoutPanelPstates.Controls.Add(this.CLKlabel, 0, 2);
 			this.tableLayoutPanelPstates.Controls.Add(this.flowLayoutPanel1, 1, 0);
 			this.tableLayoutPanelPstates.Controls.Add(this.Cofstate, 0, 0);
-            this.tableLayoutPanelPstates.Controls.Add(this.FSBNumericUpDown, 1, 2);
+            this.tableLayoutPanelPstates.Controls.Add(this.CLKNumericUpDown, 1, 2);
 			this.tableLayoutPanelPstates.Controls.Add(this.VidNumericUpDown, 1, 1);
 			this.tableLayoutPanelPstates.Controls.Add(this.refreshButton, 2, 1);
             this.tableLayoutPanelPstates.Controls.Add(this.pllfreq, 0, 3);
@@ -162,16 +162,16 @@
 			this.VIDlabel.TabIndex = 2;
 			this.VIDlabel.Text = "VID:";
 			// 
-			// FSBlabel
+			// CLKlabel
 			// 
-			this.FSBlabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
-			this.FSBlabel.AutoSize = true;
-			this.FSBlabel.Location = new System.Drawing.Point(4, 53);
-			this.FSBlabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-			this.FSBlabel.Name = "FSBlabel";
-			this.FSBlabel.Size = new System.Drawing.Size(57, 17);
-			this.FSBlabel.TabIndex = 4;
-			this.FSBlabel.Text = "FSB:";
+			this.CLKlabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+			this.CLKlabel.AutoSize = true;
+			this.CLKlabel.Location = new System.Drawing.Point(4, 53);
+			this.CLKlabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+			this.CLKlabel.Name = "CLKlabel";
+			this.CLKlabel.Size = new System.Drawing.Size(57, 17);
+			this.CLKlabel.TabIndex = 4;
+			this.CLKlabel.Text = "CLK (can't be set):";
 			// 
 			// flowLayoutPanel1
 			// 
@@ -194,7 +194,7 @@
             this.Margin = new System.Windows.Forms.Padding(4);
 			this.Name = "PStateControl";
 			this.Size = new System.Drawing.Size(344, 90);
-			((System.ComponentModel.ISupportInitialize)(this.FSBNumericUpDown)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.CLKNumericUpDown)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.VidNumericUpDown)).EndInit();
 			this.tableLayoutPanelPstates.ResumeLayout(false);
 			this.tableLayoutPanelPstates.PerformLayout();
@@ -206,13 +206,13 @@
 
 		private System.Windows.Forms.Label Cofstate;
         private System.Windows.Forms.Label pllfreq;
-        private System.Windows.Forms.NumericUpDown FSBNumericUpDown;
+        private System.Windows.Forms.NumericUpDown CLKNumericUpDown;
 		private System.Windows.Forms.Button refreshButton;
 		private System.Windows.Forms.ToolTip toolTip1;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanelPstates;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
 		private System.Windows.Forms.Label VIDlabel;
-		private System.Windows.Forms.Label FSBlabel;
+		private System.Windows.Forms.Label CLKlabel;
 		private System.Windows.Forms.NumericUpDown VidNumericUpDown;
 	}
 }
