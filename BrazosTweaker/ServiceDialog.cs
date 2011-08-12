@@ -7,7 +7,7 @@ namespace BrazosTweaker
 	public partial class ServiceDialog : Form
 	{
 		private PState[] _pStates = new PState[5];
-
+        private static int _maxPstate = K10Manager.GetHighestPState();
 
 		/// <summary>
 		/// Gets a value indicating whether the service has been (re)started.
@@ -52,11 +52,16 @@ namespace BrazosTweaker
 			if (key == null)
 				return;
 
-			for (int i = 0; i < 5; i++)
+			for (int i = 0; i < (_maxPstate + 1); i++)
 			{
 				string text = (string)key.GetValue("P" + i);
 				_pStates[i] = PState.Decode(text,i);
 			}
+            for (int i = 3; i < 5; i++)
+            {
+                string text = (string)key.GetValue("P" + i);
+                _pStates[i] = PState.Decode(text, i);
+            }
 
 			RefreshPStatesLabel();
 
@@ -76,7 +81,7 @@ namespace BrazosTweaker
 		{
 			var sb = new System.Text.StringBuilder();
 
-			for (int i = 0; i < 5; i++)
+			for (int i = 0; i < (_maxPstate + 1); i++)
 			{
 				if (_pStates[i] == null)
 					continue;
@@ -86,6 +91,16 @@ namespace BrazosTweaker
 
 				sb.AppendFormat("P{0}: {1}", i, _pStates[i].ToString());
 			}
+            for (int i = 3; i < 5; i++)
+            {
+                if (_pStates[i] == null)
+                    continue;
+
+                if (sb.Length > 0)
+                    sb.AppendLine();
+
+                sb.AppendFormat("P{0}: {1}", i, _pStates[i].ToString());
+            }
 
 			pStatesLabel.Text = sb.ToString();
 		}
@@ -119,7 +134,16 @@ namespace BrazosTweaker
 
 			if (makePermanentCheckBox.Checked)
 			{
-				for (int i = 0; i < 5; i++)
+				for (int i = 0; i < (K10Manager.GetHighestPState() + 1); i++) //this is the part, where the CPU PStates are handled
+				{
+					string valueName = "P" + i;
+
+					if (_pStates[i] != null)
+						key.SetValue(valueName, _pStates[i].Encode(i));
+					else
+						key.DeleteValue(valueName, false);
+				}
+                for (int i = 3; i < 5; i++) //this is the part for the NB PStates
 				{
 					string valueName = "P" + i;
 
