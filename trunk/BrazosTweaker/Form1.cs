@@ -206,6 +206,7 @@ namespace BrazosTweaker
 			if (m.Msg == WM_SIZE && m.WParam.ToInt32() == SIZE_MINIMIZED)
 			{
 				timer1.Enabled = false;
+                timer2.Enabled = false;
 				Hide();
 			}
 
@@ -238,6 +239,7 @@ namespace BrazosTweaker
             }
 
 			timer1.Enabled = false;
+            timer2.Enabled = false;
 
 			// try to temporarily set the number of boosted (Turbo) P-states to 0
 			// this should suspend the restriction of software P-state multis by F3x1F0[MaxSwPstateCpuCof]
@@ -259,6 +261,7 @@ namespace BrazosTweaker
             statuscontrols[0].LoadFromHardware();
 
 			timer1.Enabled = true;
+            timer2.Enabled = true;
 		}
 
 		private void serviceButton_Click(object sender, EventArgs e)
@@ -280,21 +283,37 @@ namespace BrazosTweaker
 			}
 		}
 
+        private void paypal_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=KDVJC4359EN64");
+        }
+
 		private void timer1_Tick(object sender, EventArgs e)
 		{
 			// get the current P-state of the first core
 			int currentPState = K10Manager.GetCurrentPState(0);
             int currentNbPState = K10Manager.GetNbPState();
 
-			tabControl1.SuspendLayout();
+            tabControl1.SuspendLayout();
 			for (int i = 0; i < 3; i++)
 				tabControl1.TabPages[i].Text = "P" + i + (i == currentPState ? "*" : string.Empty);
 
             for (int i = 3; i < 5; i++)
                 tabControl1.TabPages[i].Text = "NB P" + (i - 3) + ((i - 3) == currentNbPState ? "*" : string.Empty);
-			
+            
             tabControl1.ResumeLayout();
 		}
+
+        private void timer2_Tick(object sender, EventArgs e)
+        {
+            ecread.SuspendLayout();
+            ecread.Text = statusinfo.GetECreadings();
+            ecread.ResumeLayout();
+
+            //tabControl1.SuspendLayout();
+            //statusinfo.LoadFromHardware();
+            //tabControl1.ResumeLayout();
+        }
 
 		private void notifyIcon_MouseClick(object sender, MouseEventArgs e)
 		{
@@ -306,11 +325,17 @@ namespace BrazosTweaker
 				// refresh the current P-state
 				timer1_Tick(timer1, EventArgs.Empty);
 
+                // refresh the temps
+                timer2_Tick(timer2, EventArgs.Empty);
+
 				// odd, but necessary
 				Refresh();
 
-				// keep refreshing the current P-state
-				timer1.Enabled = true;
+                // keep refreshing the PStates
+                timer1.Enabled = true;
+
+				// keep refreshing the temps
+				timer2.Enabled = true;
 			}
 		}
 
