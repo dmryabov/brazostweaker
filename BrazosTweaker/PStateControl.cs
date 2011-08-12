@@ -13,6 +13,7 @@ namespace BrazosTweaker
 		// cached:
 		private static double _maxCOF = -1;
         private static double _minVid, _maxVid;
+        private static int _maxPstate = K10Manager.GetHighestPState();
 
 		private int _index = -1; // 0-4
 		private PState _pState;
@@ -54,11 +55,11 @@ namespace BrazosTweaker
 		}
 
 		/// <summary>
-		/// Gets the currently selected FSB.
+		/// Gets the currently selected CLK.
 		/// </summary>
-		public double FSB
+		public double CLK
 		{
-			get { return (double)FSBNumericUpDown.Value; }
+			get { return (double)CLKNumericUpDown.Value; }
 		}
 
 
@@ -89,9 +90,9 @@ namespace BrazosTweaker
 			}
 
 			VidNumericUpDown.Minimum = (decimal)_minVid;
-            FSBNumericUpDown.Minimum = 0;
+            CLKNumericUpDown.Minimum = 0;
 			VidNumericUpDown.Maximum = (decimal)_maxVid;
-            FSBNumericUpDown.Maximum = 200;
+            CLKNumericUpDown.Maximum = 200;
 
 			// add as many NumericUpDown controls as there are CPU cores for the multis
 			for (int i = 0; i < _numCores; i++)
@@ -107,7 +108,7 @@ namespace BrazosTweaker
 					TextAlign = HorizontalAlignment.Center,
 					Value = 4,
 				};
-                toolTip1.SetToolTip(control, "Divider for core " + (i + 1) + ".\r\nReference clock (default: 100 MHz) times " + (K10Manager.MaxCOF() + 16) + " divided by the chosen value yields the core speed.");
+                toolTip1.SetToolTip(control, "Divider for core " + (i + 1) + ".\r\nReference clock (default: 100 MHz) times " + (_maxCOF + 16) + " divided by the chosen value yields the core speed.");
 
 				control.ValueChanged += (s, e) => _modified = true;
 
@@ -127,12 +128,12 @@ namespace BrazosTweaker
 			}
 
 			VidNumericUpDown.ValueChanged += (s, e) => _modified = true;
-		    FSBNumericUpDown.ValueChanged += (s, e) => _modified = true;
+		    CLKNumericUpDown.ValueChanged += (s, e) => _modified = true;
 
 			// set the tab order
 			VidNumericUpDown.TabIndex = 3 + _numCores;
-			FSBNumericUpDown.TabIndex = VidNumericUpDown.TabIndex + 1;
-			refreshButton.TabIndex = FSBNumericUpDown.TabIndex + 1;
+			CLKNumericUpDown.TabIndex = VidNumericUpDown.TabIndex + 1;
+			refreshButton.TabIndex = CLKNumericUpDown.TabIndex + 1;
 
 			// compute the optimal width, based on the number of cores
 			_optimalWidth = Cofstate.Width + Cofstate.Margin.Horizontal + flowLayoutPanel1.Controls.Count *
@@ -160,7 +161,7 @@ namespace BrazosTweaker
 
             if (pstatetab < 3) //hardware loads for CPU
             {
-                if (_index <= K10Manager.GetHighestPState()) //skip, in case just 2 CPU PStates are initialized 
+                if (_index <= _maxPstate) //skip, in case just 2 CPU PStates are initialized 
                 {
                     _pState = PState.Load(_index);
 
@@ -177,14 +178,14 @@ namespace BrazosTweaker
 
                     VidNumericUpDown.Value = Math.Min(VidNumericUpDown.Maximum, (decimal)maxCpuVid);
                     //int check = K10Manager.SetBIOSBusSpeed(80); 
-                    FSBNumericUpDown.Value = (decimal)K10Manager.GetBIOSBusSpeed();
+                    CLKNumericUpDown.Value = (decimal)K10Manager.GetBIOSBusSpeed();
                     pllfreq.Text = "P" + _index + " Freq (CPU): " + (int)_pState.Msrs[0].PLL + "MHz";
                     Cofstate.Text = "Mult = " + (K10Manager.CurrCOF() + 16) + " divided by ->"; 
                 }
                 else
                 {
                     VidNumericUpDown.Value = (decimal)0.4;
-                    FSBNumericUpDown.Value = 100;
+                    CLKNumericUpDown.Value = 100;
                 }
             }
             else if (pstatetab == 3) 
@@ -194,7 +195,7 @@ namespace BrazosTweaker
                 var control = (NumericUpDown)flowLayoutPanel1.Controls[0];
                 control.Value = (decimal)K10Manager.GetNbDivPState0(); 
                 VidNumericUpDown.Value = (decimal)(1.55 - 0.0125 * K10Manager.GetNbVidPState0());
-                FSBNumericUpDown.Value = (decimal)K10Manager.GetBIOSBusSpeed();
+                CLKNumericUpDown.Value = (decimal)K10Manager.GetBIOSBusSpeed();
                 pllfreq.Text = "P" + (_index - 3)  + " Freq (GPU): " + (int)_pState.Msrs[0].PLL + "MHz";
                 Cofstate.Text = "Mult = " + (K10Manager.CurrCOF() + 16) + " divided by ->"; 
             }
@@ -205,14 +206,14 @@ namespace BrazosTweaker
                 var control = (NumericUpDown)flowLayoutPanel1.Controls[0];
                 control.Value = (decimal)K10Manager.GetNbDivPState1();
                 VidNumericUpDown.Value = (decimal)(1.55 - 0.0125 * K10Manager.GetNbVidPState1());
-                FSBNumericUpDown.Value = (decimal)K10Manager.GetBIOSBusSpeed();
+                CLKNumericUpDown.Value = (decimal)K10Manager.GetBIOSBusSpeed();
                 pllfreq.Text = "P" + (_index - 3) + " Freq (GPU): " + (int)_pState.Msrs[0].PLL + "MHz";
                 Cofstate.Text = "Mult = " + (K10Manager.CurrCOF() + 16) + " divided by ->"; 
             }
             else if (pstatetab == 5) //settings for displaying registers
             {
                 VidNumericUpDown.Value = 1;
-                FSBNumericUpDown.Value = 100;
+                CLKNumericUpDown.Value = 100;
             }
             _modified = false;
 		}
@@ -234,7 +235,7 @@ namespace BrazosTweaker
 
 				_pState.Msrs[i].Divider = (double)control.Value;
 				_pState.Msrs[i].Vid = (double)VidNumericUpDown.Value;
-				_pState.Msrs[i].FSB = (double)FSBNumericUpDown.Value;
+				_pState.Msrs[i].CLK = (double)CLKNumericUpDown.Value;
 			}
 
 			_pState.Save(_index);
