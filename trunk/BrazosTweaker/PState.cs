@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace BrazosTweaker
 {
@@ -97,12 +98,15 @@ namespace BrazosTweaker
             {
                 // switch temporarily to the highest thread priority
                 // (we try not to interfere with any kind of C&Q)
-                //var previousPriority = Thread.CurrentThread.Priority;
-                //Thread.CurrentThread.Priority = ThreadPriority.Highest;
+                var previousPriority = Thread.CurrentThread.Priority;
+                Thread.CurrentThread.Priority = ThreadPriority.Highest;
 
                 //check, if current NB P-State is the one, which is going to be modified
                 index = index - 3;
                 int curNbstate = K10Manager.GetNbPState();
+
+                string message = "Start: " + curNbstate;
+
                 int changedNbstate = curNbstate;
                 bool applyImmediately = (curNbstate != index);
 
@@ -116,9 +120,13 @@ namespace BrazosTweaker
                     K10Manager.SwitchToNbPState(index);
                     for (int i = 0; i < 1000; i++)
                     {
-                        changedNbstate = K10Manager.GetNbPState();
                         Thread.Sleep(3); // let transitions complete
-                        if (changedNbstate == index) i = 1000;
+                        changedNbstate = K10Manager.GetNbPState();
+                        if (changedNbstate == index)
+                        {
+                            message += " Time_init_switch: " + i;
+                            i = 1000;
+                        }
                     }
                 }
                 
@@ -164,16 +172,24 @@ namespace BrazosTweaker
                     K10Manager.SwitchToNbPState(1);
                     for (int i = 0; i < 1000; i++)
                     {
-                        changedNbstate = K10Manager.GetNbPState();
                         Thread.Sleep(3); // let transitions complete
-                        if (changedNbstate == 1) i = 1000;
+                        changedNbstate = K10Manager.GetNbPState();
+                        if (changedNbstate == 1)
+                        {
+                            message += " Time_P0_P1: " + i;
+                            i = 1000;
+                        }
                     }
                     K10Manager.SwitchToNbPState(0);
                     for (int i = 0; i < 1000; i++)
                     {
-                        changedNbstate = K10Manager.GetNbPState();
                         Thread.Sleep(3); // let transitions complete
-                        if (changedNbstate == 0) i = 1000;
+                        changedNbstate = K10Manager.GetNbPState();
+                        if (changedNbstate == 0)
+                        {
+                            message += " Time_P1_P0: " + i;
+                            i = 1000;
+                        }
                     }
                 }
                 else if (curNbstate == 1)
@@ -181,16 +197,24 @@ namespace BrazosTweaker
                     K10Manager.SwitchToNbPState(0);
                     for (int i = 0; i < 1000; i++)
                     {
-                        changedNbstate = K10Manager.GetNbPState();
                         Thread.Sleep(3); // let transitions complete
-                        if (changedNbstate == 0) i = 1000;
+                        changedNbstate = K10Manager.GetNbPState();
+                        if (changedNbstate == 0)
+                        {
+                            message += " Time_P1_P0: " + i;
+                            i = 1000;
+                        }
                     }
                     K10Manager.SwitchToNbPState(1);
                     for (int i = 0; i < 1000; i++)
                     {
-                        changedNbstate = K10Manager.GetNbPState();
                         Thread.Sleep(3); // let transitions complete
-                        if (changedNbstate == 1) i = 1000;
+                        changedNbstate = K10Manager.GetNbPState();
+                        if (changedNbstate == 1)
+                        {
+                            message += " Time_P0_P1: " + i;
+                            i = 1000;
+                        }
                     }
                 }
 
@@ -198,8 +222,8 @@ namespace BrazosTweaker
                 //K10Manager.EnDllShutDown();
                     
                 K10Manager.DisableNBPstateSwitching();
-                
-                //Thread.CurrentThread.Priority = previousPriority;
+                //MessageBox.Show(message);
+                Thread.CurrentThread.Priority = previousPriority;
             }
 		}
 
