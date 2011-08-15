@@ -368,8 +368,8 @@ private:
 				SwitchToNbPState(index);
                 for (int i = 0; i < 1000; i++)
                 {
-					changedNbstate = GetNbPState();
 					Sleep(3);
+					changedNbstate = GetNbPState();
 					if (changedNbstate == index) i = 1000;
                 }
             }
@@ -413,15 +413,15 @@ private:
                 SwitchToNbPState(1);
                 for (int i = 0; i < 1000; i++)
                 {
-                    changedNbstate = GetNbPState();
                     Sleep(3); // let transitions complete
+                    changedNbstate = GetNbPState();
                     if (changedNbstate == 1) i = 1000;
                 }
                 SwitchToNbPState(0);
                 for (int i = 0; i < 1000; i++)
                 {
-                    changedNbstate = GetNbPState();
                     Sleep(3); // let transitions complete
+                    changedNbstate = GetNbPState();
                     if (changedNbstate == 0) i = 1000;
                 }
             }
@@ -430,15 +430,15 @@ private:
                 SwitchToNbPState(0);
                 for (int i = 0; i < 1000; i++)
                 {
-                    changedNbstate = GetNbPState();
                     Sleep(3); // let transitions complete
+                    changedNbstate = GetNbPState();
                     if (changedNbstate == 0) i = 1000;
                 }
                 SwitchToNbPState(1);
                 for (int i = 0; i < 1000; i++)
                 {
-                    changedNbstate = GetNbPState();
                     Sleep(3); // let transitions complete
+                    changedNbstate = GetNbPState();
                     if (changedNbstate == 1) i = 1000;
                 }
             }
@@ -563,7 +563,7 @@ private:
 		Registry::GetBool(key, "Ganged", profile.Ganged);
 
 		profile.MinPState = (profileIndex == 2 ? 1 : 0);
-		profile.MaxPState = (profileIndex == 1 ? 0 : 4);
+		profile.MaxPState = (profileIndex == 1 ? 0 : 2);
 		Registry::GetDword(key, "MinPState", profile.MinPState);
 		Registry::GetDword(key, "MaxPState", profile.MaxPState);
 
