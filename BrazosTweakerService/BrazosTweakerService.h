@@ -366,9 +366,9 @@ private:
 			if (applyImmediately)
             {
 				SwitchToNbPState(index);
-                for (int i = 0; i < 1000; i++)
+                for (int i = 0; i < 10; i++)
                 {
-					Sleep(3);
+					Sleep(100);
 					changedNbstate = GetNbPState();
 					if (changedNbstate == index) i = 1000;
                 }
@@ -411,16 +411,16 @@ private:
 			if (curNbstate == 0)
             {
                 SwitchToNbPState(1);
-                for (int i = 0; i < 1000; i++)
+                for (int i = 0; i < 10; i++)
                 {
-                    Sleep(3); // let transitions complete
+                    Sleep(100); // let transitions complete
                     changedNbstate = GetNbPState();
                     if (changedNbstate == 1) i = 1000;
                 }
                 SwitchToNbPState(0);
-                for (int i = 0; i < 1000; i++)
+                for (int i = 0; i < 10; i++)
                 {
-                    Sleep(3); // let transitions complete
+                    Sleep(100); // let transitions complete
                     changedNbstate = GetNbPState();
                     if (changedNbstate == 0) i = 1000;
                 }
@@ -428,16 +428,16 @@ private:
             else if (curNbstate == 1)
             {
                 SwitchToNbPState(0);
-                for (int i = 0; i < 1000; i++)
+                for (int i = 0; i < 10; i++)
                 {
-                    Sleep(3); // let transitions complete
+                    Sleep(100); // let transitions complete
                     changedNbstate = GetNbPState();
                     if (changedNbstate == 0) i = 1000;
                 }
                 SwitchToNbPState(1);
-                for (int i = 0; i < 1000; i++)
+                for (int i = 0; i < 10; i++)
                 {
-                    Sleep(3); // let transitions complete
+                    Sleep(100); // let transitions complete
                     changedNbstate = GetNbPState();
                     if (changedNbstate == 1) i = 1000;
                 }
