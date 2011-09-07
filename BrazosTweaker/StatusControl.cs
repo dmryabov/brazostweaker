@@ -81,6 +81,16 @@ namespace BrazosTweaker
             return vendor;
         }
 
+        public string GetMobo()
+        {
+            string mobo = "Unknown";
+            if (smbios.Board != null)
+            {
+                mobo = smbios.Board.ProductName.ToString();
+            }
+            return mobo;
+        }
+
         public string GetReport()
         {
             StringBuilder output = new StringBuilder();
@@ -289,7 +299,7 @@ namespace BrazosTweaker
 
         public string ECReadings()
         {
-            if (GetVendor().Equals("LENOVO"))
+            if (GetVendor().Equals("LENOVO") && GetMobo().Equals("Inagua"))
             {
                 string text = "";
                 //temps 0xA8, 0xA9, 0xAA
@@ -311,7 +321,7 @@ namespace BrazosTweaker
             }
             else
             {
-                return "Temp/Fan readings for " + GetVendor() + " not supported yet.";
+                return "Temp/Fan on " + GetVendor() + "/" + GetMobo() + " not supported yet.";
             }
         }
 
