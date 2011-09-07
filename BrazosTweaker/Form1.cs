@@ -21,18 +21,72 @@ namespace BrazosTweaker
 
 		private static readonly bool _useWindowsPowerSchemes = (Environment.OSVersion.Version.Major >= 6);
 
+        private static readonly int numCores = System.Environment.ProcessorCount;
+        //private static readonly int numCores = 1;
+        private static readonly int numPstates = K10Manager.GetHighestPState();
+        //private static readonly int numPstates = 2;
+        private static readonly int family = K10Manager.GetFamily();
+        //private static readonly int family = 14;
+        
+        private static int[] currentPStateCore = new int[numCores];
+        private static readonly int processBarSteps = numPstates + 1;
+        private static readonly int processBarPerc = 100 / processBarSteps;
 
-		public Form1()
+        private static bool monitorPstates = true;
+        private static bool alwaysOnTop = true;
+
+        public Form1()
 		{
 			InitializeComponent();
+
+            if (family != 14)
+            {
+                MessageBox.Show("Your CPU/APU from AMD family: " + family + "h is not supported!");
+            }
+
+            //needed to reduces flickering
+            SetStyle(ControlStyles.UserPaint, true);
+            SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+
+            
+            if (numCores == 3)
+            {
+                this.Controls.Remove(this.pstateLabel4);
+                this.Controls.Remove(this.core4label);
+                this.Controls.Remove(this.cpu4Bar);
+                ShiftTable(-15);
+            }
+            else if (numCores == 2)
+            {
+                this.Controls.Remove(this.pstateLabel4);
+                this.Controls.Remove(this.core4label);
+                this.Controls.Remove(this.cpu4Bar);
+                this.Controls.Remove(this.pstateLabel3);
+                this.Controls.Remove(this.core3label);
+                this.Controls.Remove(this.cpu3Bar);
+                ShiftTable(-30);
+            }
+            else if (numCores == 1)
+            {
+                this.Controls.Remove(this.pstateLabel4);
+                this.Controls.Remove(this.core4label);
+                this.Controls.Remove(this.cpu4Bar);
+                this.Controls.Remove(this.pstateLabel3);
+                this.Controls.Remove(this.core3label);
+                this.Controls.Remove(this.cpu3Bar); 
+                this.Controls.Remove(this.pstateLabel2);
+                this.Controls.Remove(this.core2label);
+                this.Controls.Remove(this.cpu2Bar);
+                ShiftTable(-50);
+            }
 
 			notifyIcon.Icon = this.Icon;
 			notifyIcon.ContextMenuStrip = new ContextMenuStrip();
 			notifyIcon.Visible = true;
 
 			this.Width += p0StateControl.GetDeltaOptimalWidth();
-            this.Height = 230;
-
+            
 			p0StateControl.LoadFromHardware(0);
 			p1StateControl.LoadFromHardware(1);
 			p2StateControl.LoadFromHardware(2);
@@ -290,18 +344,38 @@ namespace BrazosTweaker
 
 		private void timer1_Tick(object sender, EventArgs e)
 		{
-			// get the current P-state of the first core
-			int currentPState = K10Manager.GetCurrentPState(0);
-            int currentNbPState = K10Manager.GetNbPState();
+            if (monitorPstates)
+            {
+                int currentNbPState = K10Manager.GetNbPState();
+                nbBar.Value = (2 - currentNbPState) * 50;
+                nbPstateLabel.Text = currentNbPState.ToString();
 
-            tabControl1.SuspendLayout();
-			for (int i = 0; i < 3; i++)
-				tabControl1.TabPages[i].Text = "P" + i + (i == currentPState ? "*" : string.Empty);
-
-            for (int i = 3; i < 5; i++)
-                tabControl1.TabPages[i].Text = "NB P" + (i - 3) + ((i - 3) == currentNbPState ? "*" : string.Empty);
-            
-            tabControl1.ResumeLayout();
+                // get the current P-state of the first core
+                for (int i = 0; i < numCores; i++)
+                {
+                    currentPStateCore[i] = K10Manager.GetCurrentPState(i);
+                    if (i == 0)
+                    {
+                        cpu1Bar.Value = (processBarSteps - currentPStateCore[i]) * (processBarPerc);
+                        pstateLabel1.Text = currentPStateCore[i].ToString();
+                    }
+                    else if (i == 1)
+                    {
+                        cpu2Bar.Value = (processBarSteps - currentPStateCore[i]) * (processBarPerc);
+                        pstateLabel2.Text = currentPStateCore[i].ToString();
+                    }
+                    else if (i == 2)
+                    {
+                        cpu3Bar.Value = (processBarSteps - currentPStateCore[i]) * (processBarPerc);
+                        pstateLabel3.Text = currentPStateCore[i].ToString();
+                    }
+                    else if (i == 3)
+                    {
+                        cpu4Bar.Value = (processBarSteps - currentPStateCore[i]) * (processBarPerc);
+                        pstateLabel4.Text = currentPStateCore[i].ToString();
+                    }
+                }
+            }
 		}
 
         private void timer2_Tick(object sender, EventArgs e)
@@ -343,5 +417,45 @@ namespace BrazosTweaker
 		{
 			Application.Exit();
 		}
-	}
+
+        private void monitorCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (monitorCheckBox.Checked)
+            {
+                monitorPstates = true;
+            }
+            else
+            {
+                monitorPstates = false;
+                cpu1Bar.Value = 0;
+                cpu2Bar.Value = 0;
+                cpu3Bar.Value = 0;
+                cpu4Bar.Value = 0;
+                nbBar.Value = 0;
+                pstateLabel1.Text = "";
+                pstateLabel2.Text = "";
+                pstateLabel3.Text = "";
+                pstateLabel4.Text = "";
+                nbPstateLabel.Text = "Family " + family + "h";
+            }
+        }
+
+        private void ShiftTable(int shifty)
+        {
+            this.tabControl1.Location = new System.Drawing.Point(12, 130 + shifty);
+            this.tabControl1.Size = new System.Drawing.Size(345, 120 - shifty);
+        }
+
+        private void alwaysOnTopCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            if (alwaysOnTopCheck.Checked)
+            {
+                this.TopMost = true;
+            }
+            else
+            {
+                this.TopMost = false;
+            }
+        }
+    }
 }
