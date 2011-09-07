@@ -118,9 +118,9 @@ namespace BrazosTweaker
                 if (applyImmediately)
                 {
                     K10Manager.SwitchToNbPState(index);
-                    for (int i = 0; i < 1000; i++)
+                    for (int i = 0; i < 10; i++)
                     {
-                        Thread.Sleep(3); // let transitions complete
+                        Thread.Sleep(100); // let transitions complete
                         changedNbstate = K10Manager.GetNbPState();
                         if (changedNbstate == index)
                         {
@@ -143,9 +143,10 @@ namespace BrazosTweaker
                     const uint mask = 0x0007F000; //enable overwrite of Vid only
                     config = (config & ~mask) | (_msrs[0].Encode(index + 3) & mask);
                     uint voltage = Program.Ols.ReadPciConfig(0xC3, 0x15C);
-                    const uint maskvolt = 0x00007F00;
+                    //const uint maskvolt = 0x00007F00;
+                    const uint maskvolt = 0x7F7F7F00; //overwriting VIDSelect2 and 3 in addition
                     uint check = _msrs[0].Encode(index + 3) >> 12 & 0x7F;
-                    voltage = (voltage & ~maskvolt) | ((check << 8) & maskvolt);
+                    voltage = (voltage & ~maskvolt) | ((check << 24) | (check << 16) | (check << 8) & maskvolt);
 
                     Program.Ols.WritePciConfig(0xC3, 0xDC, config);
                     Program.Ols.WritePciConfig(0xC3, 0x15C, voltage);
@@ -170,9 +171,9 @@ namespace BrazosTweaker
                 if (curNbstate == 0)
                 {
                     K10Manager.SwitchToNbPState(1);
-                    for (int i = 0; i < 1000; i++)
+                    for (int i = 0; i < 10; i++)
                     {
-                        Thread.Sleep(3); // let transitions complete
+                        Thread.Sleep(100); // let transitions complete
                         changedNbstate = K10Manager.GetNbPState();
                         if (changedNbstate == 1)
                         {
@@ -181,9 +182,9 @@ namespace BrazosTweaker
                         }
                     }
                     K10Manager.SwitchToNbPState(0);
-                    for (int i = 0; i < 1000; i++)
+                    for (int i = 0; i < 10; i++)
                     {
-                        Thread.Sleep(3); // let transitions complete
+                        Thread.Sleep(100); // let transitions complete
                         changedNbstate = K10Manager.GetNbPState();
                         if (changedNbstate == 0)
                         {
@@ -195,9 +196,9 @@ namespace BrazosTweaker
                 else if (curNbstate == 1)
                 {
                     K10Manager.SwitchToNbPState(0);
-                    for (int i = 0; i < 1000; i++)
+                    for (int i = 0; i < 10; i++)
                     {
-                        Thread.Sleep(3); // let transitions complete
+                        Thread.Sleep(100); // let transitions complete
                         changedNbstate = K10Manager.GetNbPState();
                         if (changedNbstate == 0)
                         {
@@ -206,9 +207,9 @@ namespace BrazosTweaker
                         }
                     }
                     K10Manager.SwitchToNbPState(1);
-                    for (int i = 0; i < 1000; i++)
+                    for (int i = 0; i < 10; i++)
                     {
-                        Thread.Sleep(3); // let transitions complete
+                        Thread.Sleep(100); // let transitions complete
                         changedNbstate = K10Manager.GetNbPState();
                         if (changedNbstate == 1)
                         {
