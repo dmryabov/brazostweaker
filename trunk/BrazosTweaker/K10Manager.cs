@@ -359,6 +359,24 @@ namespace BrazosTweaker
 			max = (maxValue == 0 ? 1.55   : 1.55 - maxValue * 0.0125);
 		}
 
+        /// <summary>
+        /// Returns the family in hex.
+        /// </summary>
+        public static int GetFamily()
+        {
+            uint eax = 0, ebx = 0, ecx = 0, edx = 0;
+            int baseFamily, extFamily, family;
+            if (Program.Ols.Cpuid(0x80000001u, ref eax, ref ebx, ref ecx, ref edx) == 0)
+                throw new NotSupportedException("Cpuid()");
+
+            baseFamily = (int)((eax >> 8) & 0xF);
+            extFamily = (int)((eax >> 20) & 0xF);
+            family = baseFamily + extFamily;
+            int tmp1 = family % 16;
+            int tmp10 = (int)(family / 16);
+            family = tmp10 * 10 + tmp1;
+            return family;
+        }
 
 		/// <summary>
 		/// Returns the number of (enabled) CPU cores.
