@@ -13,8 +13,8 @@ namespace BrazosTweaker
 		// cached:
 		private static double _maxCOF = -1;
         private static double _minVid, _maxVid;
-        private static int _maxPstate = K10Manager.GetHighestPState();
-
+        private static int _maxPstate = -1;
+        
 		private int _index = -1; // 0-4
 		private PState _pState;
 
@@ -70,6 +70,7 @@ namespace BrazosTweaker
 		{
 			InitializeComponent();
 
+            
 			// check if the CPU's maximum multi is limited (non Black Edition CPUs)
 			if (_maxCOF < 0)
 			{
@@ -79,10 +80,13 @@ namespace BrazosTweaker
 					_maxCOF = 31.5;
 					_minVid = 0.0125;
 					_maxVid = 1.55;
+                    _maxPstate = -1;
 				}
 				else
 				{
 					_maxCOF = K10Manager.MaxCOF();
+                    _maxPstate = K10Manager.GetHighestPState();
+
                     //double _curDiv = K10Manager.CurrCOF();
                     //uint MainDivEn = K10Manager.MainCofEn();
 					K10Manager.GetVidLimits(out _minVid, out _maxVid);
