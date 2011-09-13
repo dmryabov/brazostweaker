@@ -40,17 +40,12 @@
             this.cpu4Bar = new System.Windows.Forms.ProgressBar();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageP0 = new System.Windows.Forms.TabPage();
-            this.p0StateControl = new BrazosTweaker.PStateControl();
             this.tabPageP1 = new System.Windows.Forms.TabPage();
-            this.p1StateControl = new BrazosTweaker.PStateControl();
             this.tabPageP2 = new System.Windows.Forms.TabPage();
-            this.p2StateControl = new BrazosTweaker.PStateControl();
             this.tabPageNbP0 = new System.Windows.Forms.TabPage();
-            this.nbp0StateControl = new BrazosTweaker.PStateControl();
             this.tabPageNbP1 = new System.Windows.Forms.TabPage();
-            this.nbp1StateControl = new BrazosTweaker.PStateControl();
             this.tabPageStatus = new System.Windows.Forms.TabPage();
-            this.statusinfo = new BrazosTweaker.StatusControl();
+            this.logButton = new System.Windows.Forms.Button();
             this.nbBar = new System.Windows.Forms.ProgressBar();
             this.core1label = new System.Windows.Forms.Label();
             this.core2label = new System.Windows.Forms.Label();
@@ -70,7 +65,12 @@
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.nbLabel = new System.Windows.Forms.Label();
             this.nbPstateLabel = new System.Windows.Forms.Label();
-            this.logButton = new System.Windows.Forms.Button();
+            this.p0StateControl = new BrazosTweaker.PStateControl();
+            this.p1StateControl = new BrazosTweaker.PStateControl();
+            this.p2StateControl = new BrazosTweaker.PStateControl();
+            this.nbp0StateControl = new BrazosTweaker.PStateControl();
+            this.nbp1StateControl = new BrazosTweaker.PStateControl();
+            this.statusinfo = new BrazosTweaker.StatusControl();
             this.tabControl1.SuspendLayout();
             this.tabPageP0.SuspendLayout();
             this.tabPageP1.SuspendLayout();
@@ -190,14 +190,6 @@
             this.tabPageP0.Text = "P0";
             this.tabPageP0.UseVisualStyleBackColor = true;
             // 
-            // p0StateControl
-            // 
-            this.p0StateControl.Location = new System.Drawing.Point(0, 0);
-            this.p0StateControl.Name = "p0StateControl";
-            this.p0StateControl.PStateIndex = 0;
-            this.p0StateControl.Size = new System.Drawing.Size(289, 73);
-            this.p0StateControl.TabIndex = 0;
-            // 
             // tabPageP1
             // 
             this.tabPageP1.Controls.Add(this.p1StateControl);
@@ -208,14 +200,6 @@
             this.tabPageP1.TabIndex = 1;
             this.tabPageP1.Text = "P1";
             this.tabPageP1.UseVisualStyleBackColor = true;
-            // 
-            // p1StateControl
-            // 
-            this.p1StateControl.Location = new System.Drawing.Point(0, 0);
-            this.p1StateControl.Name = "p1StateControl";
-            this.p1StateControl.PStateIndex = 1;
-            this.p1StateControl.Size = new System.Drawing.Size(289, 73);
-            this.p1StateControl.TabIndex = 0;
             // 
             // tabPageP2
             // 
@@ -228,14 +212,6 @@
             this.tabPageP2.Text = "P2";
             this.tabPageP2.UseVisualStyleBackColor = true;
             // 
-            // p2StateControl
-            // 
-            this.p2StateControl.Location = new System.Drawing.Point(0, 0);
-            this.p2StateControl.Name = "p2StateControl";
-            this.p2StateControl.PStateIndex = 2;
-            this.p2StateControl.Size = new System.Drawing.Size(289, 73);
-            this.p2StateControl.TabIndex = 0;
-            // 
             // tabPageNbP0
             // 
             this.tabPageNbP0.Controls.Add(this.nbp0StateControl);
@@ -247,14 +223,6 @@
             this.tabPageNbP0.Text = "NB P0";
             this.tabPageNbP0.UseVisualStyleBackColor = true;
             // 
-            // nbp0StateControl
-            // 
-            this.nbp0StateControl.Location = new System.Drawing.Point(0, 0);
-            this.nbp0StateControl.Name = "nbp0StateControl";
-            this.nbp0StateControl.PStateIndex = 3;
-            this.nbp0StateControl.Size = new System.Drawing.Size(289, 73);
-            this.nbp0StateControl.TabIndex = 0;
-            // 
             // tabPageNbP1
             // 
             this.tabPageNbP1.Controls.Add(this.nbp1StateControl);
@@ -265,14 +233,6 @@
             this.tabPageNbP1.TabIndex = 4;
             this.tabPageNbP1.Text = "NB P1";
             this.tabPageNbP1.UseVisualStyleBackColor = true;
-            // 
-            // nbp1StateControl
-            // 
-            this.nbp1StateControl.Location = new System.Drawing.Point(0, 0);
-            this.nbp1StateControl.Name = "nbp1StateControl";
-            this.nbp1StateControl.PStateIndex = 4;
-            this.nbp1StateControl.Size = new System.Drawing.Size(289, 73);
-            this.nbp1StateControl.TabIndex = 0;
             // 
             // tabPageStatus
             // 
@@ -286,21 +246,19 @@
             this.tabPageStatus.Text = "Status";
             this.tabPageStatus.UseVisualStyleBackColor = true;
             // 
-            // statusinfo
+            // logButton
             // 
-            this.statusinfo.AutoSize = true;
-            this.statusinfo.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.statusinfo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.statusinfo.Location = new System.Drawing.Point(3, 3);
-            this.statusinfo.Margin = new System.Windows.Forms.Padding(4);
-            this.statusinfo.Name = "statusinfo";
-            this.statusinfo.Size = new System.Drawing.Size(331, 88);
-            this.statusinfo.StatusIndex = 0;
-            this.statusinfo.TabIndex = 0;
+            this.logButton.Location = new System.Drawing.Point(450, 150);
+            this.logButton.Name = "logButton";
+            this.logButton.Size = new System.Drawing.Size(75, 23);
+            this.logButton.TabIndex = 1;
+            this.logButton.Text = "Log now";
+            this.logButton.UseVisualStyleBackColor = true;
+            this.logButton.Click += new System.EventHandler(this.logButton_Click);
             // 
             // nbBar
             // 
-            this.nbBar.Location = new System.Drawing.Point(192, 62);
+            this.nbBar.Location = new System.Drawing.Point(225, 62);
             this.nbBar.Margin = new System.Windows.Forms.Padding(2);
             this.nbBar.Name = "nbBar";
             this.nbBar.Size = new System.Drawing.Size(56, 12);
@@ -350,17 +308,17 @@
             // pstateLabel
             // 
             this.pstateLabel.AutoSize = true;
-            this.pstateLabel.Location = new System.Drawing.Point(120, 44);
+            this.pstateLabel.Location = new System.Drawing.Point(116, 44);
             this.pstateLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.pstateLabel.Name = "pstateLabel";
-            this.pstateLabel.Size = new System.Drawing.Size(39, 13);
+            this.pstateLabel.Size = new System.Drawing.Size(69, 13);
             this.pstateLabel.TabIndex = 14;
-            this.pstateLabel.Text = "PState";
+            this.pstateLabel.Text = "PState - Freq";
             // 
             // pstateLabel1
             // 
             this.pstateLabel1.AutoSize = true;
-            this.pstateLabel1.Location = new System.Drawing.Point(126, 61);
+            this.pstateLabel1.Location = new System.Drawing.Point(113, 61);
             this.pstateLabel1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.pstateLabel1.Name = "pstateLabel1";
             this.pstateLabel1.Size = new System.Drawing.Size(16, 13);
@@ -370,7 +328,7 @@
             // pstateLabel2
             // 
             this.pstateLabel2.AutoSize = true;
-            this.pstateLabel2.Location = new System.Drawing.Point(126, 77);
+            this.pstateLabel2.Location = new System.Drawing.Point(113, 77);
             this.pstateLabel2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.pstateLabel2.Name = "pstateLabel2";
             this.pstateLabel2.Size = new System.Drawing.Size(16, 13);
@@ -380,7 +338,7 @@
             // pstateLabel3
             // 
             this.pstateLabel3.AutoSize = true;
-            this.pstateLabel3.Location = new System.Drawing.Point(126, 95);
+            this.pstateLabel3.Location = new System.Drawing.Point(113, 95);
             this.pstateLabel3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.pstateLabel3.Name = "pstateLabel3";
             this.pstateLabel3.Size = new System.Drawing.Size(16, 13);
@@ -390,7 +348,7 @@
             // pstateLabel4
             // 
             this.pstateLabel4.AutoSize = true;
-            this.pstateLabel4.Location = new System.Drawing.Point(126, 111);
+            this.pstateLabel4.Location = new System.Drawing.Point(113, 111);
             this.pstateLabel4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.pstateLabel4.Name = "pstateLabel4";
             this.pstateLabel4.Size = new System.Drawing.Size(16, 13);
@@ -414,7 +372,7 @@
             // alwaysOnTopCheck
             // 
             this.alwaysOnTopCheck.AutoSize = true;
-            this.alwaysOnTopCheck.Location = new System.Drawing.Point(179, 43);
+            this.alwaysOnTopCheck.Location = new System.Drawing.Point(202, 43);
             this.alwaysOnTopCheck.Margin = new System.Windows.Forms.Padding(2);
             this.alwaysOnTopCheck.Name = "alwaysOnTopCheck";
             this.alwaysOnTopCheck.Size = new System.Drawing.Size(92, 17);
@@ -467,7 +425,7 @@
             // nbLabel
             // 
             this.nbLabel.AutoSize = true;
-            this.nbLabel.Location = new System.Drawing.Point(166, 61);
+            this.nbLabel.Location = new System.Drawing.Point(199, 61);
             this.nbLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.nbLabel.Name = "nbLabel";
             this.nbLabel.Size = new System.Drawing.Size(22, 13);
@@ -477,22 +435,64 @@
             // nbPstateLabel
             // 
             this.nbPstateLabel.AutoSize = true;
-            this.nbPstateLabel.Location = new System.Drawing.Point(255, 62);
+            this.nbPstateLabel.Location = new System.Drawing.Point(288, 62);
             this.nbPstateLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.nbPstateLabel.Name = "nbPstateLabel";
             this.nbPstateLabel.Size = new System.Drawing.Size(16, 13);
             this.nbPstateLabel.TabIndex = 23;
             this.nbPstateLabel.Text = "-1";
             // 
-            // logButton
+            // p0StateControl
             // 
-            this.logButton.Location = new System.Drawing.Point(450, 150);
-            this.logButton.Name = "logButton";
-            this.logButton.Size = new System.Drawing.Size(75, 23);
-            this.logButton.TabIndex = 1;
-            this.logButton.Text = "Log now";
-            this.logButton.UseVisualStyleBackColor = true;
-            this.logButton.Click += new System.EventHandler(this.logButton_Click);
+            this.p0StateControl.Location = new System.Drawing.Point(0, 0);
+            this.p0StateControl.Name = "p0StateControl";
+            this.p0StateControl.PStateIndex = 0;
+            this.p0StateControl.Size = new System.Drawing.Size(289, 73);
+            this.p0StateControl.TabIndex = 0;
+            // 
+            // p1StateControl
+            // 
+            this.p1StateControl.Location = new System.Drawing.Point(0, 0);
+            this.p1StateControl.Name = "p1StateControl";
+            this.p1StateControl.PStateIndex = 1;
+            this.p1StateControl.Size = new System.Drawing.Size(289, 73);
+            this.p1StateControl.TabIndex = 0;
+            // 
+            // p2StateControl
+            // 
+            this.p2StateControl.Location = new System.Drawing.Point(0, 0);
+            this.p2StateControl.Name = "p2StateControl";
+            this.p2StateControl.PStateIndex = 2;
+            this.p2StateControl.Size = new System.Drawing.Size(289, 73);
+            this.p2StateControl.TabIndex = 0;
+            // 
+            // nbp0StateControl
+            // 
+            this.nbp0StateControl.Location = new System.Drawing.Point(0, 0);
+            this.nbp0StateControl.Name = "nbp0StateControl";
+            this.nbp0StateControl.PStateIndex = 3;
+            this.nbp0StateControl.Size = new System.Drawing.Size(289, 73);
+            this.nbp0StateControl.TabIndex = 0;
+            // 
+            // nbp1StateControl
+            // 
+            this.nbp1StateControl.Location = new System.Drawing.Point(0, 0);
+            this.nbp1StateControl.Name = "nbp1StateControl";
+            this.nbp1StateControl.PStateIndex = 4;
+            this.nbp1StateControl.Size = new System.Drawing.Size(289, 73);
+            this.nbp1StateControl.TabIndex = 0;
+            // 
+            // statusinfo
+            // 
+            this.statusinfo.AutoSize = true;
+            this.statusinfo.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.statusinfo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.statusinfo.Location = new System.Drawing.Point(3, 3);
+            this.statusinfo.Margin = new System.Windows.Forms.Padding(4);
+            this.statusinfo.Name = "statusinfo";
+            this.statusinfo.Size = new System.Drawing.Size(331, 88);
+            this.statusinfo.StatusIndex = 0;
+            this.statusinfo.TabIndex = 0;
             // 
             // Form1
             // 
@@ -525,7 +525,7 @@
             this.Controls.Add(this.cpu4Bar);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(356, 210);
+            this.MinimumSize = new System.Drawing.Size(380, 210);
             this.Name = "Form1";
             this.Text = "BrazosTweaker V1.0.6";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
