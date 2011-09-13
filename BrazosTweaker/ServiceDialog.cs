@@ -24,7 +24,6 @@ namespace BrazosTweaker
 			makePermanentCheckBox.CheckedChanged += (s, e) => updateButton.Enabled = makePermanentCheckBox.Checked;
 			turboCheckBox.CheckedChanged += (s, e) =>
 			{
-				turboCoresNumericUpDown.Enabled = (turboCheckBox.Checked && !K10Manager.IsTurboLocked());
 				if (turboCheckBox.Checked)
 				{
 					enableCustomCnQCheckBox.Checked = false;
@@ -39,11 +38,8 @@ namespace BrazosTweaker
 			updateButton_Click(updateButton, EventArgs.Empty);
 
 			turboCheckBox.Enabled = K10Manager.IsTurboSupported();
-			turboCheckBox.Checked = (K10Manager.IsTurboEnabled());
-			turboCoresNumericUpDown.Enabled = !K10Manager.IsTurboLocked();
-			turboCoresNumericUpDown.Value = K10Manager.GetNumTurboCores();
-			turboCoresNumericUpDown.Maximum = K10Manager.GetNumCores() - 1;
-
+            turboCheckBox.Checked = K10Manager.IsTurboSupported();
+			
 			balancedProfileControl.LoadFromRegistry();
 			highPerformanceProfileControl.LoadFromRegistry();
 			powerSaverProfileControl.LoadFromRegistry();
@@ -66,10 +62,6 @@ namespace BrazosTweaker
 			RefreshPStatesLabel();
 
 			makePermanentCheckBox.Checked = ((int)key.GetValue("EnableCustomPStates", 0) != 0);
-
-			int turboCores = (int)key.GetValue("TurboCores", (int)turboCoresNumericUpDown.Value);
-			turboCheckBox.Checked = (turboCores > 0);
-			turboCoresNumericUpDown.Value = turboCores;
 
 			enableCustomCnQCheckBox.Checked = ((int)key.GetValue("EnableCustomCnQ", 0) != 0);
 
@@ -153,8 +145,6 @@ namespace BrazosTweaker
 						key.DeleteValue(valueName, false);
 				}
 			}
-
-			key.SetValue("TurboCores", (turboCheckBox.Checked ? (int)turboCoresNumericUpDown.Value : 0));
 
 			key.SetValue("EnableCustomCnQ", (enableCustomCnQCheckBox.Checked ? 1 : 0));
 			key.Close();
