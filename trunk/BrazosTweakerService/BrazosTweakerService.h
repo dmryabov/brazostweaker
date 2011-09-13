@@ -149,26 +149,6 @@ private:
 			result = true;
 		}
 
-		if (_params.TurboCores >= 0)
-		{
-			if (_params.TurboCores == 0)
-				TurboManager::Set(false);
-			else
-			{
-				DWORD eax, ebx, ecx, edx;
-				if (Cpuid(0x80000008u, &eax, &ebx, &ecx, &edx))
-				{
-					const int numCores = (ecx & 0xFF) + 1;
-					const int numIdleCores = std::max(1, numCores - _params.TurboCores);
-					TurboManager::SetNumIdleCores(numIdleCores);
-				}
-
-				TurboManager::Set(true);
-			}
-
-			result = true;
-		}
-
 		if (_params.EnableCustomCnQ)
 		{
 			_customCnQThread = new CustomCnQThread(_params, _key);
@@ -208,12 +188,6 @@ private:
 		// try to temporarily set the number of boosted (Turbo) P-states to 0
 		// this should suspend the restriction of software P-state multis by F3x1F0[MaxSwPstateCpuCof]
 		const bool turboEnabled = TurboManager::IsEnabled();
-		int boostedStates = TurboManager::GetNumBoostedStates(); // the number of boosted states may be 1 even if the Turbo is disabled
-		if (boostedStates != 0)
-		{
-			TurboManager::Set(false);
-			boostedStates = TurboManager::GetNumBoostedStates();
-		}
 
 		// get the max enabled software P-state from core 0
 		DWORD lower, higher;
@@ -252,7 +226,7 @@ private:
 				// if software P0 or boost is currently active: try the highest enabled software P-state
 				//   it should specify a lower multi and a lower voltage than the current state
 				//   (multi applied before voltage when switching up)
-				const int tempSwPState = (currentHwPState <= boostedStates ? maxEnabledSwPState : 0);
+				const int tempSwPState = (currentHwPState <= 0 ? maxEnabledSwPState : 0);
 
 				// initiate switching to the temp state and immediately continue with the next core
 				WrmsrTx(0xC0010062u, tempSwPState, 0, affinityMask);
@@ -270,7 +244,7 @@ private:
 
 			// initiate switching back (or to software P0 if the core was boosted) and immediately
 			// continue with the next core
-			const int currentSwPState = std::max(0, currentHwPState - boostedStates);
+			const int currentSwPState = std::max(0, currentHwPState);
 			const DWORD_PTR affinityMask = (DWORD_PTR)1 << i;
 			WrmsrTx(0xC0010062u, currentSwPState, 0, affinityMask);
 		}
@@ -279,9 +253,6 @@ private:
 
 		SetThreadPriority(currentThread, previousPriority);
 
-		// re-enable the Turbo
-		if (turboEnabled)
-			TurboManager::Set(true);
 	}
 
 	/// <summary>
