@@ -27,8 +27,7 @@ namespace BrazosTweaker
         /// </summary>
         public double PLL { get; set; }
 
-
-		/// <summary>
+        /// <summary>
 		/// Loads a core's P-state.
 		/// </summary>
 		public static PStateMsr Load(int pStateIndex, int coreIndex)
@@ -60,7 +59,8 @@ namespace BrazosTweaker
             //uint maxDiv = (uint)K10Manager.MaxCOF();
             uint maxDiv = (uint)K10Manager.CurrCOF();
             uint clk = (uint)K10Manager.GetBIOSBusSpeed();
-                
+            bool turbo = K10Manager.IsTurboSupported();
+    
             if (pstate < 3)
             {
                 if (pstate <= K10Manager.GetHighestPState())
@@ -75,10 +75,15 @@ namespace BrazosTweaker
                     {
                         DivPLL = 2;
                     }
-                    else if (maxDiv == 24 && Div < 4) //C-50 seems to restrict PLL frequencies higher than 1.0GHz
+                    else if (maxDiv == 24 && Div < 4 && !turbo) //C-50 seems to restrict PLL frequencies higher than 1.0GHz
                     {
                         DivPLL = 4;
                     }
+                    else if (maxDiv == 24 && Div < 3 && turbo) //C-60 (with turbo seems to restrict PLL frequencies higher than 1.33GHz
+                    {
+                        DivPLL = 3;
+                    }
+                    
                     var msr = new PStateMsr()
                     {
                         Divider = Div,
