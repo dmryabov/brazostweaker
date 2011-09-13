@@ -58,7 +58,8 @@ namespace BrazosTweaker
             {
                 uint msrIndex = 0xC0010064u + (uint)index;
 
-                int boostedStates = K10Manager.GetNumBoostedStates();
+                //int boostedStates = K10Manager.GetNumBoostedStates();
+                int boostedStates = 0;
                 int indexSw = Math.Max(0, index - boostedStates);
 
                 int tempPStateHw = (index <= boostedStates ? _maxPstate : 0);
