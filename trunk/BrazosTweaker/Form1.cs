@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
+using System.IO;
 
 namespace BrazosTweaker
 {
@@ -297,16 +298,16 @@ namespace BrazosTweaker
 
 			// try to temporarily set the number of boosted (Turbo) P-states to 0
 			// this should suspend the restriction of software P-state multis by F3x1F0[MaxSwPstateCpuCof]
-			bool turboEnabled = K10Manager.IsTurboEnabled();
-			int boostedStates = K10Manager.GetNumBoostedStates();
-			if (boostedStates != 0)
-				K10Manager.SetTurbo(false);
+			//bool turboEnabled = K10Manager.IsTurboEnabled();
+			//int boostedStates = K10Manager.GetNumBoostedStates();
+			//if (boostedStates != 0)
+			//	K10Manager.SetTurbo(false);
 
 			for (int i = 0; i < 5; i++)
 				controls[i].Save();
 
-			if (turboEnabled)
-				K10Manager.SetTurbo(true);
+			//if (turboEnabled)
+			//	K10Manager.SetTurbo(true);
 
 			// refresh the P-states
             for (int i = 0; i < 5; i++)
@@ -444,6 +445,7 @@ namespace BrazosTweaker
         {
             this.tabControl1.Location = new System.Drawing.Point(12, 130 + shifty);
             this.tabControl1.Size = new System.Drawing.Size(345, 120 - shifty);
+            this.MinimumSize = new System.Drawing.Size(356, 210 + shifty);
         }
 
         private void alwaysOnTopCheck_CheckedChanged(object sender, EventArgs e)
@@ -456,6 +458,35 @@ namespace BrazosTweaker
             {
                 this.TopMost = false;
             }
+        }
+
+        private void logButton_Click(object sender, EventArgs e)
+        {
+            //create new file or just overwrite the old one
+            TextWriter htmlwrite = new StreamWriter("BrazosTweaker.log", false);
+
+            htmlwrite.WriteLine("Family: " + family + "h");
+            htmlwrite.WriteLine("Bit numbering\t63   59   55   51   47   43   39   35   31   27   23   19   15   11   7    3  0\n"
+                            + "COFVID 0071\t\t" + statusinfo.COFVidString() + "\n" 
+                            + "P-State0 0064\t" + statusinfo.CPUPstate0() + "\n"
+                            + "P-State0 0065\t" + statusinfo.CPUPstate1() + "\n"
+                            + "P-State0 0066\t" + statusinfo.CPUPstate2() + "\n"
+                            + "P-State0 0067\t" + statusinfo.CPUPstate3() + "\n"
+                            + "P-State0 0068\t" + statusinfo.CPUPstate4() + "\n"
+                            + "P-State0 0069\t" + statusinfo.CPUPstate5() + "\n"
+                            + "P-State0 006A\t" + statusinfo.CPUPstate6() + "\n"
+                            + "P-State0 006B\t" + statusinfo.CPUPstate7());
+            htmlwrite.WriteLine("Bit numbering\t\t\t31   27   23   19   15   11   7    3  0\n"
+                            + "NB P-State0 D18F3xDC\t" + statusinfo.NBPstate0() + "\n"
+                            + "NB P-State1 D18F6x90\t" + statusinfo.NBPstate1() + "\n"
+                            + "ClockTiming D18F3xD4\t" + statusinfo.ClockTiming() + "\n"
+                            + "BIOSClock D0F0xE4_x0130_80F1\t" + statusinfo.BIOSClock());
+            htmlwrite.WriteLine("D18F3x15C\t" + statusinfo.VoltageControl() + "\n"
+                            + "D0 00\tD1F0 90\tSMBus A0\tD18 C0\n" + statusinfo.DebugOutput() + "\n"
+                            + "MSRC001_0061 P-State" + statusinfo.MaxPstate() + "\n" 
+                            + "BIOS vendor\tBIOS version\tMoBo vendor\tMoBo name\n" + statusinfo.GetReport());
+                       
+            htmlwrite.Close();
         }
     }
 }
