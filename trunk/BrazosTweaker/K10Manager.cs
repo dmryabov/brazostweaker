@@ -410,7 +410,8 @@ namespace BrazosTweaker
 					_isTurboSupported = 0;
 			}
 
-			return (_isTurboSupported != 0);
+            return (_isTurboSupported != 0); //returns true, if Turbo is supported (C-60) 
+            //return true;
 		}
 
 		/// <summary>
@@ -420,7 +421,7 @@ namespace BrazosTweaker
 		public static bool IsTurboLocked()
 		{
 			if (!IsTurboSupported())
-				return true;
+				return true; //returns true, if Turbo is not supported (C-50) 
 
 			uint lower = Program.Ols.ReadPciConfig(0xC4, 0x15C);
 			return ((lower & 0x80000000u) != 0);
@@ -433,7 +434,7 @@ namespace BrazosTweaker
 		public static bool SetTurbo(bool enable)
 		{
 			if (!IsTurboSupported())
-				return false;
+				return false; 
 
 			uint lower = Program.Ols.ReadPciConfig(0xC4, 0x15C);
 			bool isLocked = ((lower & 0x80000000u) != 0);
