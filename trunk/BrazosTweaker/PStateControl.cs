@@ -184,7 +184,8 @@ namespace BrazosTweaker
                     //int check = K10Manager.SetBIOSBusSpeed(80); 
                     CLKNumericUpDown.Value = (decimal)K10Manager.GetBIOSBusSpeed();
                     pllfreq.Text = "P" + _index + " Freq (CPU): " + (int)_pState.Msrs[0].PLL + "MHz";
-                    Cofstate.Text = "Mult = " + (K10Manager.CurrCOF() + 16) + " divided by ->"; 
+                    Cofstate.Text = "Mult = " + (K10Manager.CurrCOF() + 16) + " divided by ->";
+                    Form1.freq[pstatetab] = (int)_pState.Msrs[0].PLL;
                 }
                 else
                 {
@@ -201,7 +202,8 @@ namespace BrazosTweaker
                 VidNumericUpDown.Value = (decimal)(1.55 - 0.0125 * K10Manager.GetNbVidPState0());
                 CLKNumericUpDown.Value = (decimal)K10Manager.GetBIOSBusSpeed();
                 pllfreq.Text = "P" + (_index - 3)  + " Freq (GPU): " + (int)_pState.Msrs[0].PLL + "MHz";
-                Cofstate.Text = "Mult = " + (K10Manager.CurrCOF() + 16) + " divided by ->"; 
+                Cofstate.Text = "Mult = " + (K10Manager.CurrCOF() + 16) + " divided by ->";
+                Form1.freq[pstatetab] = (int)_pState.Msrs[0].PLL;
             }
             else if (pstatetab == 4)
             {
@@ -212,7 +214,8 @@ namespace BrazosTweaker
                 VidNumericUpDown.Value = (decimal)(1.55 - 0.0125 * K10Manager.GetNbVidPState1());
                 CLKNumericUpDown.Value = (decimal)K10Manager.GetBIOSBusSpeed();
                 pllfreq.Text = "P" + (_index - 3) + " Freq (GPU): " + (int)_pState.Msrs[0].PLL + "MHz";
-                Cofstate.Text = "Mult = " + (K10Manager.CurrCOF() + 16) + " divided by ->"; 
+                Cofstate.Text = "Mult = " + (K10Manager.CurrCOF() + 16) + " divided by ->";
+                Form1.freq[pstatetab] = (int)_pState.Msrs[0].PLL;
             }
             else if (pstatetab == 5) //settings for displaying registers
             {

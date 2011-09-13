@@ -36,6 +36,8 @@ namespace BrazosTweaker
         private static bool monitorPstates = true;
         private static bool alwaysOnTop = true;
 
+        public static int[] freq = new int[8];
+
         public Form1()
 		{
 			InitializeComponent();
@@ -349,8 +351,8 @@ namespace BrazosTweaker
             {
                 int currentNbPState = K10Manager.GetNbPState();
                 nbBar.Value = (2 - currentNbPState) * 50;
-                nbPstateLabel.Text = currentNbPState.ToString();
-
+                nbPstateLabel.Text = currentNbPState.ToString() + " - " + freq[currentNbPState + 3].ToString() + "MHz";
+                
                 // get the current P-state of the first core
                 for (int i = 0; i < numCores; i++)
                 {
@@ -358,22 +360,22 @@ namespace BrazosTweaker
                     if (i == 0)
                     {
                         cpu1Bar.Value = (processBarSteps - currentPStateCore[i]) * (processBarPerc);
-                        pstateLabel1.Text = currentPStateCore[i].ToString();
+                        pstateLabel1.Text = currentPStateCore[i].ToString() + " - " + freq[currentPStateCore[i]].ToString() + "MHz";
                     }
                     else if (i == 1)
                     {
                         cpu2Bar.Value = (processBarSteps - currentPStateCore[i]) * (processBarPerc);
-                        pstateLabel2.Text = currentPStateCore[i].ToString();
+                        pstateLabel2.Text = currentPStateCore[i].ToString() + " - " + freq[currentPStateCore[i]].ToString() + "MHz";
                     }
                     else if (i == 2)
                     {
                         cpu3Bar.Value = (processBarSteps - currentPStateCore[i]) * (processBarPerc);
-                        pstateLabel3.Text = currentPStateCore[i].ToString();
+                        pstateLabel3.Text = currentPStateCore[i].ToString() + " - " + freq[currentPStateCore[i]].ToString() + "MHz";
                     }
                     else if (i == 3)
                     {
                         cpu4Bar.Value = (processBarSteps - currentPStateCore[i]) * (processBarPerc);
-                        pstateLabel4.Text = currentPStateCore[i].ToString();
+                        pstateLabel4.Text = currentPStateCore[i].ToString() + " - " + freq[currentPStateCore[i]].ToString() + "MHz";
                     }
                 }
             }
@@ -445,7 +447,7 @@ namespace BrazosTweaker
         {
             this.tabControl1.Location = new System.Drawing.Point(12, 130 + shifty);
             this.tabControl1.Size = new System.Drawing.Size(345, 120 - shifty);
-            this.MinimumSize = new System.Drawing.Size(356, 210 + shifty);
+            this.MinimumSize = new System.Drawing.Size(375, 210 + shifty);
         }
 
         private void alwaysOnTopCheck_CheckedChanged(object sender, EventArgs e)
