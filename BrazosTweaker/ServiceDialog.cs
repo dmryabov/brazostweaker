@@ -178,5 +178,24 @@ namespace BrazosTweaker
 					"BrazosTweaker", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 			}
 		}
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("Do you really want to delete all your customized settings?\n" 
+                + "If you want that:\n1. Click OK.\n2. Close the application without hitting \"Apply\"\n3. Restart your system.", "Reset PStates", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+            if (result == DialogResult.OK)
+            {
+                var key = Microsoft.Win32.Registry.LocalMachine.CreateSubKey(@"Software\BrazosTweaker");
+                if (key == null)
+                    return;
+                for (int i = 0; i < 5; i++)
+                {
+                    string valueName = "P" + i;
+                    key.DeleteValue(valueName, false);
+                }
+                key.SetValue("EnableCustomPStates", 0);
+                key.Close();
+            }
+        }
 	}
 }
