@@ -30,44 +30,13 @@ namespace BrazosTweaker
         // Embedded controller status register bits
         byte EC_STAT_OBF = 0x01;    // Output buffer full 
         byte EC_STAT_IBF = 0x02;    // Input buffer full 
-        byte EC_STAT_CMD = 0x08;    // Last write was a command write (0=data) 
-
+        
         // Embedded controller commands
         // (write to EC_CTRLPORT to initiate read/write operation)
         byte EC_CTRLPORT_READ = 0x80;	
-        byte EC_CTRLPORT_WRITE = 0x81;
-        byte EC_CTRLPORT_QUERY = 0x84;
-
-        byte TP_ECOFFSET_FAN = 0x2F;	// 1 byte (binary xyzz zzz)
+        
         byte TP_ECOFFSET_FANSPEED = 0x94; // 16 bit word, lo/hi byte
 
-        /*const char * SENSORNAME[]= {
-	    // 78-7F (state index 0-7)
-	    "CPU", // main processor
-	    "APS", // harddisk protection gyroscope
-	    "PCM", // under PCMCIA slot (front left)
-	    "GPU", // graphical processor
-	    "BAT", // inside T43 battery
-	    "X7D", // usually n/a
-	    "BAT", // inside T43 battery
-	    "X7F", // usually n/a
-
-	    // C0-C4 (state index 8-11)
-	    "BUS", // unknown
-	    "PCI", // mini-pci, WLAN, southbridge area
-	    "PWR", // power supply (get's hot while charging battery)
-	    "XC3", // usually n/a
-
-    	// future
-	    "",
-	    "",
-	    "",
-	    "",
-	    ""
-        */
-
-        //byte[] SENSORADDR = {0xA8 , 0xA9, 0xAA, 0xE8, 0x7C, 0x7D, 0x7E, 0x7F, 0xC0, 0xC1, 0xC2, 0xC3};
-                           //Core   Temp1 Temp2
         byte[] SENSORADDR = { 0xA8, 0xA9, 0xAA };
                             //Core   Temp1 Temp2
 
@@ -156,34 +125,22 @@ namespace BrazosTweaker
         /// </summary>
         public void LoadFromHardware()
         {
+            RegLabel64CPU.Text = "Bit numbering\nCOFVID 0071\nP-State0 0064\nP-State1 0065\nP-State2 0066\nP-State3 0067\nP-State4 0068\nP-State5 0069\nP-State6 006A\nP-State7 006B";
             Reg64CPU.Text = "63     59     55     51     47     43     39     35     31     27     23     19     15     11     7       3    0\n"
                 + COFVidString() + "\n" + CPUPstate0() + "\n" + CPUPstate1() + "\n" + CPUPstate2() + "\n" + CPUPstate3() + "\n" + CPUPstate4() + "\n" + CPUPstate5() + "\n" + CPUPstate6() + "\n" + CPUPstate7();
-            //Reg64CPU.Text = "";
+            RegLabel32NB.Text = "Bit numbering\nNB P-State0 D18F3xDC\nNB P-State1 D18F6x90\nClockTiming D18F3xD4\nBIOSClock D0F0xE4_x0130_80F1";
             Reg32NB.Text = "31     27     23     19     15     11     7       3    0\n" + NBPstate0() + "\n" + NBPstate1() + "\n" + ClockTiming() + "\n" + BIOSClock();
-            //Reg32NB.Text = "";
+            PCIDevicesLabel.Text = "D18F3x15C\nD0 00\nD1F0 90\nSMBus A0\nD18 C0\nMSRC001_0061 P-State\nBIOS vendor\nBIOS version\nMoBo vendor\nMoBo name";
             PCIDevices.Text = VoltageControl() + "\n" + DebugOutput() + "\n" + MaxPstate() + "\n" + GetReport();
             //PCIDevices.Text = IOInterface();
-            PStateReg1.Text = "";
+            /*PStateReg1.Text = "";
             PStateReg2.Text = "";
             NbPStateReg1.Text = "";
             ClockReg.Text = "";
             BIOSReg.Text = "";
-            RegLabel64CPU.Text = "Bit numbering\nCOFVID 0071\nP-State0 0064\nP-State1 0065\nP-State2 0066\nP-State3 0067\nP-State4 0068\nP-State5 0069\nP-State6 006A\nP-State7 006B";
             //RegLabel64CPU.Text = "";
-            RegLabel32NB.Text = "Bit numbering\nNB P-State0 D18F3xDC\nNB P-State1 D18F6x90\nClockTiming D18F3xD4\nBIOSClock D0F0xE4_x0130_80F1";
             //RegLabel32NB.Text = "";
-            PCIDevicesLabel.Text = "D18F3x15C\nD0 00\nD1F0 90\nSMBus A0\nD18 C0\nMSRC001_0061 P-State\nBIOS vendor\nBIOS version\nMoBo vendor\nMoBo name";
-            //PCIDevicesLabel.Text = "IOOutput";
-            RegLabel4.Text = "";
-            RegLabel5.Text = "";
-            RegLabel12.Text = "";
-            RegLabel13.Text = "";
-            RegLabel6.Text = "";
-            RegLabel7.Text = "";
-            RegLabel8.Text = "";
-            RegLabel9.Text = "";
-            RegLabel10.Text = "";
-            RegLabel11.Text = "";
+            //PCIDevicesLabel.Text = "IOOutput";*/
             _modified = false;
         }
 
@@ -531,6 +488,25 @@ namespace BrazosTweaker
             }
             text += "";
             return text;
-        }        
+        }
+
+         private void ResetButton_Click(object sender, EventArgs e)
+         {
+             DialogResult result = MessageBox.Show("Do you really want to delete all your customized settings?\n"
+                    + "If you want that:\n1. Click OK.\n2. Close the application without hitting \"Apply\"\n3. Restart your system.", "Reset PStates", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+             if (result == DialogResult.OK)
+             {
+                 var key = Microsoft.Win32.Registry.LocalMachine.CreateSubKey(@"Software\BrazosTweaker");
+                 if (key == null)
+                     return;
+                 for (int i = 0; i < 5; i++)
+                 {
+                     string valueName = "P" + i;
+                     key.DeleteValue(valueName, false);
+                 }
+                 key.SetValue("EnableCustomPStates", 0);
+                 key.Close();
+             }
+         }
     }
 }
