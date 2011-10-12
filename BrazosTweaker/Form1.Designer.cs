@@ -40,37 +40,39 @@
             this.cpu4Bar = new System.Windows.Forms.ProgressBar();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageP0 = new System.Windows.Forms.TabPage();
+            this.p0StateControl = new BrazosTweaker.PStateControl();
             this.tabPageP1 = new System.Windows.Forms.TabPage();
+            this.p1StateControl = new BrazosTweaker.PStateControl();
             this.tabPageP2 = new System.Windows.Forms.TabPage();
+            this.p2StateControl = new BrazosTweaker.PStateControl();
             this.tabPageNbP0 = new System.Windows.Forms.TabPage();
+            this.nbp0StateControl = new BrazosTweaker.PStateControl();
             this.tabPageNbP1 = new System.Windows.Forms.TabPage();
+            this.nbp1StateControl = new BrazosTweaker.PStateControl();
             this.tabPageStatus = new System.Windows.Forms.TabPage();
             this.logButton = new System.Windows.Forms.Button();
+            this.statusinfo = new BrazosTweaker.StatusControl();
             this.nbBar = new System.Windows.Forms.ProgressBar();
+            this.pstateLabel = new System.Windows.Forms.Label();
+            this.monitorCheckBox = new System.Windows.Forms.CheckBox();
+            this.alwaysOnTopCheck = new System.Windows.Forms.CheckBox();
+            this.ecread = new System.Windows.Forms.TextBox();
+            this.cfgTempLabel = new System.Windows.Forms.Label();
             this.core1label = new System.Windows.Forms.Label();
             this.core2label = new System.Windows.Forms.Label();
             this.core3label = new System.Windows.Forms.Label();
             this.core4label = new System.Windows.Forms.Label();
-            this.pstateLabel = new System.Windows.Forms.Label();
             this.pstateLabel1 = new System.Windows.Forms.Label();
             this.pstateLabel2 = new System.Windows.Forms.Label();
             this.pstateLabel3 = new System.Windows.Forms.Label();
             this.pstateLabel4 = new System.Windows.Forms.Label();
-            this.monitorCheckBox = new System.Windows.Forms.CheckBox();
-            this.alwaysOnTopCheck = new System.Windows.Forms.CheckBox();
             this.paypal = new System.Windows.Forms.LinkLabel();
-            this.ecread = new System.Windows.Forms.TextBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.nbLabel = new System.Windows.Forms.Label();
             this.nbPstateLabel = new System.Windows.Forms.Label();
-            this.p0StateControl = new BrazosTweaker.PStateControl();
-            this.p1StateControl = new BrazosTweaker.PStateControl();
-            this.p2StateControl = new BrazosTweaker.PStateControl();
-            this.nbp0StateControl = new BrazosTweaker.PStateControl();
-            this.nbp1StateControl = new BrazosTweaker.PStateControl();
-            this.statusinfo = new BrazosTweaker.StatusControl();
+            this.nbCfgTemp = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPageP0.SuspendLayout();
             this.tabPageP1.SuspendLayout();
@@ -190,6 +192,14 @@
             this.tabPageP0.Text = "P0";
             this.tabPageP0.UseVisualStyleBackColor = true;
             // 
+            // p0StateControl
+            // 
+            this.p0StateControl.Location = new System.Drawing.Point(0, 0);
+            this.p0StateControl.Name = "p0StateControl";
+            this.p0StateControl.PStateIndex = 0;
+            this.p0StateControl.Size = new System.Drawing.Size(289, 79);
+            this.p0StateControl.TabIndex = 0;
+            // 
             // tabPageP1
             // 
             this.tabPageP1.Controls.Add(this.p1StateControl);
@@ -200,6 +210,14 @@
             this.tabPageP1.TabIndex = 1;
             this.tabPageP1.Text = "P1";
             this.tabPageP1.UseVisualStyleBackColor = true;
+            // 
+            // p1StateControl
+            // 
+            this.p1StateControl.Location = new System.Drawing.Point(0, 0);
+            this.p1StateControl.Name = "p1StateControl";
+            this.p1StateControl.PStateIndex = 1;
+            this.p1StateControl.Size = new System.Drawing.Size(289, 77);
+            this.p1StateControl.TabIndex = 0;
             // 
             // tabPageP2
             // 
@@ -212,6 +230,14 @@
             this.tabPageP2.Text = "P2";
             this.tabPageP2.UseVisualStyleBackColor = true;
             // 
+            // p2StateControl
+            // 
+            this.p2StateControl.Location = new System.Drawing.Point(0, 0);
+            this.p2StateControl.Name = "p2StateControl";
+            this.p2StateControl.PStateIndex = 2;
+            this.p2StateControl.Size = new System.Drawing.Size(289, 77);
+            this.p2StateControl.TabIndex = 0;
+            // 
             // tabPageNbP0
             // 
             this.tabPageNbP0.Controls.Add(this.nbp0StateControl);
@@ -223,6 +249,14 @@
             this.tabPageNbP0.Text = "NB P0";
             this.tabPageNbP0.UseVisualStyleBackColor = true;
             // 
+            // nbp0StateControl
+            // 
+            this.nbp0StateControl.Location = new System.Drawing.Point(0, 0);
+            this.nbp0StateControl.Name = "nbp0StateControl";
+            this.nbp0StateControl.PStateIndex = 3;
+            this.nbp0StateControl.Size = new System.Drawing.Size(289, 76);
+            this.nbp0StateControl.TabIndex = 0;
+            // 
             // tabPageNbP1
             // 
             this.tabPageNbP1.Controls.Add(this.nbp1StateControl);
@@ -233,6 +267,14 @@
             this.tabPageNbP1.TabIndex = 4;
             this.tabPageNbP1.Text = "NB P1";
             this.tabPageNbP1.UseVisualStyleBackColor = true;
+            // 
+            // nbp1StateControl
+            // 
+            this.nbp1StateControl.Location = new System.Drawing.Point(0, 0);
+            this.nbp1StateControl.Name = "nbp1StateControl";
+            this.nbp1StateControl.PStateIndex = 4;
+            this.nbp1StateControl.Size = new System.Drawing.Size(289, 78);
+            this.nbp1StateControl.TabIndex = 0;
             // 
             // tabPageStatus
             // 
@@ -248,13 +290,27 @@
             // 
             // logButton
             // 
-            this.logButton.Location = new System.Drawing.Point(450, 150);
+            this.logButton.Location = new System.Drawing.Point(16, 80);
             this.logButton.Name = "logButton";
-            this.logButton.Size = new System.Drawing.Size(75, 23);
+            this.logButton.Size = new System.Drawing.Size(90, 23);
             this.logButton.TabIndex = 1;
             this.logButton.Text = "Log now";
+            this.toolTip1.SetToolTip(this.logButton, "Hit the button to store the current settings in a file, which than will be opened" +
+                    " in your default editor for further use.");
             this.logButton.UseVisualStyleBackColor = true;
             this.logButton.Click += new System.EventHandler(this.logButton_Click);
+            // 
+            // statusinfo
+            // 
+            this.statusinfo.AutoSize = true;
+            this.statusinfo.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.statusinfo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.statusinfo.Location = new System.Drawing.Point(3, 3);
+            this.statusinfo.Margin = new System.Windows.Forms.Padding(4);
+            this.statusinfo.Name = "statusinfo";
+            this.statusinfo.Size = new System.Drawing.Size(331, 88);
+            this.statusinfo.StatusIndex = 0;
+            this.statusinfo.TabIndex = 0;
             // 
             // nbBar
             // 
@@ -263,7 +319,70 @@
             this.nbBar.Name = "nbBar";
             this.nbBar.Size = new System.Drawing.Size(56, 12);
             this.nbBar.TabIndex = 22;
-            this.toolTip1.SetToolTip(this.nbBar, "Shows the current speed of the NB");
+            this.toolTip1.SetToolTip(this.nbBar, "Shows the current Northbridge/GPU PState and its related frequency.");
+            // 
+            // pstateLabel
+            // 
+            this.pstateLabel.AutoSize = true;
+            this.pstateLabel.Location = new System.Drawing.Point(116, 44);
+            this.pstateLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.pstateLabel.Name = "pstateLabel";
+            this.pstateLabel.Size = new System.Drawing.Size(69, 13);
+            this.pstateLabel.TabIndex = 14;
+            this.pstateLabel.Text = "PState - Freq";
+            this.toolTip1.SetToolTip(this.pstateLabel, "This column shows the current Pstate and its related frequency per core. ");
+            // 
+            // monitorCheckBox
+            // 
+            this.monitorCheckBox.AutoSize = true;
+            this.monitorCheckBox.Checked = true;
+            this.monitorCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.monitorCheckBox.Location = new System.Drawing.Point(8, 43);
+            this.monitorCheckBox.Margin = new System.Windows.Forms.Padding(2);
+            this.monitorCheckBox.Name = "monitorCheckBox";
+            this.monitorCheckBox.Size = new System.Drawing.Size(110, 17);
+            this.monitorCheckBox.TabIndex = 19;
+            this.monitorCheckBox.Text = "Enable monitoring";
+            this.toolTip1.SetToolTip(this.monitorCheckBox, "Check this option to watch the CPU stepping through the currently enabled frequen" +
+                    "cies based on current load.");
+            this.monitorCheckBox.UseVisualStyleBackColor = true;
+            this.monitorCheckBox.CheckedChanged += new System.EventHandler(this.monitorCheckBox_CheckedChanged);
+            // 
+            // alwaysOnTopCheck
+            // 
+            this.alwaysOnTopCheck.AutoSize = true;
+            this.alwaysOnTopCheck.Location = new System.Drawing.Point(202, 43);
+            this.alwaysOnTopCheck.Margin = new System.Windows.Forms.Padding(2);
+            this.alwaysOnTopCheck.Name = "alwaysOnTopCheck";
+            this.alwaysOnTopCheck.Size = new System.Drawing.Size(92, 17);
+            this.alwaysOnTopCheck.TabIndex = 20;
+            this.alwaysOnTopCheck.Text = "Always on top";
+            this.toolTip1.SetToolTip(this.alwaysOnTopCheck, "Check this option, if you want to see the application always on top to monitor PS" +
+                    "tates and temperature.");
+            this.alwaysOnTopCheck.UseVisualStyleBackColor = true;
+            this.alwaysOnTopCheck.CheckedChanged += new System.EventHandler(this.alwaysOnTopCheck_CheckedChanged);
+            // 
+            // ecread
+            // 
+            this.ecread.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.ecread.Location = new System.Drawing.Point(12, 20);
+            this.ecread.MinimumSize = new System.Drawing.Size(226, 20);
+            this.ecread.Name = "ecread";
+            this.ecread.Size = new System.Drawing.Size(231, 20);
+            this.ecread.TabIndex = 7;
+            this.toolTip1.SetToolTip(this.ecread, "Shows the chip and motherboard temperatures, while also adding an approximated va" +
+                    "lue of the fan speed.");
+            // 
+            // cfgTempLabel
+            // 
+            this.cfgTempLabel.AutoSize = true;
+            this.cfgTempLabel.Location = new System.Drawing.Point(199, 77);
+            this.cfgTempLabel.Name = "cfgTempLabel";
+            this.cfgTempLabel.Size = new System.Drawing.Size(79, 13);
+            this.cfgTempLabel.TabIndex = 24;
+            this.cfgTempLabel.Text = "NB CFG Temp:";
+            this.toolTip1.SetToolTip(this.cfgTempLabel, "Shows the current APU temperature.");
             // 
             // core1label
             // 
@@ -305,16 +424,6 @@
             this.core4label.TabIndex = 13;
             this.core4label.Text = "Core 4";
             // 
-            // pstateLabel
-            // 
-            this.pstateLabel.AutoSize = true;
-            this.pstateLabel.Location = new System.Drawing.Point(116, 44);
-            this.pstateLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.pstateLabel.Name = "pstateLabel";
-            this.pstateLabel.Size = new System.Drawing.Size(69, 13);
-            this.pstateLabel.TabIndex = 14;
-            this.pstateLabel.Text = "PState - Freq";
-            // 
             // pstateLabel1
             // 
             this.pstateLabel1.AutoSize = true;
@@ -355,32 +464,6 @@
             this.pstateLabel4.TabIndex = 18;
             this.pstateLabel4.Text = "-1";
             // 
-            // monitorCheckBox
-            // 
-            this.monitorCheckBox.AutoSize = true;
-            this.monitorCheckBox.Checked = true;
-            this.monitorCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.monitorCheckBox.Location = new System.Drawing.Point(8, 43);
-            this.monitorCheckBox.Margin = new System.Windows.Forms.Padding(2);
-            this.monitorCheckBox.Name = "monitorCheckBox";
-            this.monitorCheckBox.Size = new System.Drawing.Size(110, 17);
-            this.monitorCheckBox.TabIndex = 19;
-            this.monitorCheckBox.Text = "Enable monitoring";
-            this.monitorCheckBox.UseVisualStyleBackColor = true;
-            this.monitorCheckBox.CheckedChanged += new System.EventHandler(this.monitorCheckBox_CheckedChanged);
-            // 
-            // alwaysOnTopCheck
-            // 
-            this.alwaysOnTopCheck.AutoSize = true;
-            this.alwaysOnTopCheck.Location = new System.Drawing.Point(202, 43);
-            this.alwaysOnTopCheck.Margin = new System.Windows.Forms.Padding(2);
-            this.alwaysOnTopCheck.Name = "alwaysOnTopCheck";
-            this.alwaysOnTopCheck.Size = new System.Drawing.Size(92, 17);
-            this.alwaysOnTopCheck.TabIndex = 20;
-            this.alwaysOnTopCheck.Text = "Always on top";
-            this.alwaysOnTopCheck.UseVisualStyleBackColor = true;
-            this.alwaysOnTopCheck.CheckedChanged += new System.EventHandler(this.alwaysOnTopCheck_CheckedChanged);
-            // 
             // paypal
             // 
             this.paypal.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
@@ -394,16 +477,6 @@
             this.paypal.TabStop = true;
             this.paypal.Text = "Please donate to support development.";
             this.paypal.Click += new System.EventHandler(this.paypal_Click);
-            // 
-            // ecread
-            // 
-            this.ecread.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.ecread.Location = new System.Drawing.Point(12, 20);
-            this.ecread.MinimumSize = new System.Drawing.Size(226, 20);
-            this.ecread.Name = "ecread";
-            this.ecread.Size = new System.Drawing.Size(231, 20);
-            this.ecread.TabIndex = 7;
             // 
             // timer1
             // 
@@ -442,63 +515,22 @@
             this.nbPstateLabel.TabIndex = 23;
             this.nbPstateLabel.Text = "-1";
             // 
-            // p0StateControl
+            // nbCfgTemp
             // 
-            this.p0StateControl.Location = new System.Drawing.Point(0, 0);
-            this.p0StateControl.Name = "p0StateControl";
-            this.p0StateControl.PStateIndex = 0;
-            this.p0StateControl.Size = new System.Drawing.Size(289, 73);
-            this.p0StateControl.TabIndex = 0;
-            // 
-            // p1StateControl
-            // 
-            this.p1StateControl.Location = new System.Drawing.Point(0, 0);
-            this.p1StateControl.Name = "p1StateControl";
-            this.p1StateControl.PStateIndex = 1;
-            this.p1StateControl.Size = new System.Drawing.Size(289, 73);
-            this.p1StateControl.TabIndex = 0;
-            // 
-            // p2StateControl
-            // 
-            this.p2StateControl.Location = new System.Drawing.Point(0, 0);
-            this.p2StateControl.Name = "p2StateControl";
-            this.p2StateControl.PStateIndex = 2;
-            this.p2StateControl.Size = new System.Drawing.Size(289, 73);
-            this.p2StateControl.TabIndex = 0;
-            // 
-            // nbp0StateControl
-            // 
-            this.nbp0StateControl.Location = new System.Drawing.Point(0, 0);
-            this.nbp0StateControl.Name = "nbp0StateControl";
-            this.nbp0StateControl.PStateIndex = 3;
-            this.nbp0StateControl.Size = new System.Drawing.Size(289, 73);
-            this.nbp0StateControl.TabIndex = 0;
-            // 
-            // nbp1StateControl
-            // 
-            this.nbp1StateControl.Location = new System.Drawing.Point(0, 0);
-            this.nbp1StateControl.Name = "nbp1StateControl";
-            this.nbp1StateControl.PStateIndex = 4;
-            this.nbp1StateControl.Size = new System.Drawing.Size(289, 73);
-            this.nbp1StateControl.TabIndex = 0;
-            // 
-            // statusinfo
-            // 
-            this.statusinfo.AutoSize = true;
-            this.statusinfo.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.statusinfo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.statusinfo.Location = new System.Drawing.Point(3, 3);
-            this.statusinfo.Margin = new System.Windows.Forms.Padding(4);
-            this.statusinfo.Name = "statusinfo";
-            this.statusinfo.Size = new System.Drawing.Size(331, 88);
-            this.statusinfo.StatusIndex = 0;
-            this.statusinfo.TabIndex = 0;
+            this.nbCfgTemp.AutoSize = true;
+            this.nbCfgTemp.Location = new System.Drawing.Point(284, 77);
+            this.nbCfgTemp.Name = "nbCfgTemp";
+            this.nbCfgTemp.Size = new System.Drawing.Size(30, 13);
+            this.nbCfgTemp.TabIndex = 25;
+            this.nbCfgTemp.Text = "35°C";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(369, 295);
+            this.Controls.Add(this.nbCfgTemp);
+            this.Controls.Add(this.cfgTempLabel);
             this.Controls.Add(this.nbPstateLabel);
             this.Controls.Add(this.nbBar);
             this.Controls.Add(this.nbLabel);
@@ -527,7 +559,7 @@
             this.MaximizeBox = false;
             this.MinimumSize = new System.Drawing.Size(380, 210);
             this.Name = "Form1";
-            this.Text = "BrazosTweaker V1.0.6";
+            this.Text = "BrazosTweaker V1.0.7";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.tabControl1.ResumeLayout(false);
             this.tabPageP0.ResumeLayout(false);
@@ -585,6 +617,8 @@
         private System.Windows.Forms.ProgressBar nbBar;
         private System.Windows.Forms.Label nbPstateLabel;
         private System.Windows.Forms.Button logButton;
+        private System.Windows.Forms.Label cfgTempLabel;
+        private System.Windows.Forms.Label nbCfgTemp;
     }
 }
 

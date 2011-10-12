@@ -387,6 +387,10 @@ namespace BrazosTweaker
             ecread.Text = statusinfo.GetECreadings();
             ecread.ResumeLayout();
 
+            nbCfgTemp.SuspendLayout();
+            nbCfgTemp.Text = K10Manager.GetTemp().ToString() + "°C";
+            nbCfgTemp.ResumeLayout();
+             
             //tabControl1.SuspendLayout();
             //statusinfo.LoadFromHardware();
             //tabControl1.ResumeLayout();
@@ -489,6 +493,8 @@ namespace BrazosTweaker
                             + "BIOS vendor\tBIOS version\tMoBo vendor\tMoBo name\n" + statusinfo.GetReport());
                        
             htmlwrite.Close();
+            System.Diagnostics.Process.Start("BrazosTweaker.log");
+
         }
     }
 }

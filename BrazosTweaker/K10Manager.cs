@@ -91,6 +91,15 @@ namespace BrazosTweaker
         }
 
         /// <summary>
+        /// Sets the bus speed controlled by BIOS.
+        /// </summary>
+        public static int GetTemp()
+        {
+            uint settings = Program.Ols.ReadPciConfig(0xC3, 0xA4);
+            return (int)(((settings >> 21) & 0x7FF) >> 3);
+        }
+
+        /// <summary>
         /// enable DRAM self refresh to be able to change Div and Vid on th NB Pstate by Software switching
         /// </summary>
         public static void DisDllShutDown()
