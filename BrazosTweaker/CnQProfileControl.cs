@@ -65,9 +65,9 @@ namespace BrazosTweaker
 			samplingIntervalNumericUpDown.Value = 50;
 
 			minPStateNumericUpDown.Value = (Profile == CnQProfile.PowerSaver ? 1 : 0);
-			maxPStateNumericUpDown.Value = (Profile == CnQProfile.HighPerformance ? 0 : 4);
+			maxPStateNumericUpDown.Value = (Profile == CnQProfile.HighPerformance ? 0 : 2);
 
-			thresholdUpNumericUpDown.Value = 100 / System.Environment.ProcessorCount;
+			thresholdUpNumericUpDown.Value =  100 / System.Environment.ProcessorCount - 1;
 			thresholdDownNumericUpDown.Value = (int)(0.8f * (float)thresholdUpNumericUpDown.Value);
 			thresholdUpNumericUpDown.Minimum = thresholdDownNumericUpDown.Value;
 			thresholdDownNumericUpDown.Maximum = thresholdUpNumericUpDown.Value;
