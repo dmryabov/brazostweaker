@@ -38,16 +38,16 @@
             this.applyButton = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.balancedProfileControl = new BrazosTweaker.CnQProfileControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.highPerformanceProfileControl = new BrazosTweaker.CnQProfileControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.powerSaverProfileControl = new BrazosTweaker.CnQProfileControl();
             this.turboCheckBox = new System.Windows.Forms.CheckBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.serviceController1 = new System.ServiceProcess.ServiceController();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.button1 = new System.Windows.Forms.Button();
-            this.balancedProfileControl = new BrazosTweaker.CnQProfileControl();
-            this.highPerformanceProfileControl = new BrazosTweaker.CnQProfileControl();
-            this.powerSaverProfileControl = new BrazosTweaker.CnQProfileControl();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -100,8 +100,8 @@
             this.enableCustomCnQCheckBox.Size = new System.Drawing.Size(157, 17);
             this.enableCustomCnQCheckBox.TabIndex = 4;
             this.enableCustomCnQCheckBox.Text = "Enable custom Cool & Quiet";
-            this.toolTip1.SetToolTip(this.enableCustomCnQCheckBox, "Let BrazosTweaker handle P-state transitions.\r\nRecommended for Phenom I and/or Wi" +
-                    "ndows XP.\r\nCannot be used with hardware Turbo.");
+            this.toolTip1.SetToolTip(this.enableCustomCnQCheckBox, "Let BrazosTweaker handle P-state transitions.\r\n \r\nCannot be used with hardware Tu" +
+                    "rbo.");
             this.enableCustomCnQCheckBox.UseMnemonic = false;
             this.enableCustomCnQCheckBox.UseVisualStyleBackColor = true;
             // 
@@ -178,6 +178,17 @@
             this.tabPage1.Text = "Balanced";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // balancedProfileControl
+            // 
+            this.balancedProfileControl.AutoSize = true;
+            this.balancedProfileControl.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.balancedProfileControl.Location = new System.Drawing.Point(3, 3);
+            this.balancedProfileControl.Margin = new System.Windows.Forms.Padding(4);
+            this.balancedProfileControl.Name = "balancedProfileControl";
+            this.balancedProfileControl.Profile = BrazosTweaker.CnQProfile.Balanced;
+            this.balancedProfileControl.Size = new System.Drawing.Size(293, 150);
+            this.balancedProfileControl.TabIndex = 0;
+            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.highPerformanceProfileControl);
@@ -188,6 +199,17 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "High performance";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // highPerformanceProfileControl
+            // 
+            this.highPerformanceProfileControl.AutoSize = true;
+            this.highPerformanceProfileControl.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.highPerformanceProfileControl.Location = new System.Drawing.Point(3, 3);
+            this.highPerformanceProfileControl.Margin = new System.Windows.Forms.Padding(4);
+            this.highPerformanceProfileControl.Name = "highPerformanceProfileControl";
+            this.highPerformanceProfileControl.Profile = BrazosTweaker.CnQProfile.HighPerformance;
+            this.highPerformanceProfileControl.Size = new System.Drawing.Size(293, 150);
+            this.highPerformanceProfileControl.TabIndex = 0;
             // 
             // tabPage3
             // 
@@ -200,6 +222,17 @@
             this.tabPage3.Text = "Power saver";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // powerSaverProfileControl
+            // 
+            this.powerSaverProfileControl.AutoSize = true;
+            this.powerSaverProfileControl.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.powerSaverProfileControl.Location = new System.Drawing.Point(3, 3);
+            this.powerSaverProfileControl.Margin = new System.Windows.Forms.Padding(4);
+            this.powerSaverProfileControl.Name = "powerSaverProfileControl";
+            this.powerSaverProfileControl.Profile = BrazosTweaker.CnQProfile.PowerSaver;
+            this.powerSaverProfileControl.Size = new System.Drawing.Size(293, 150);
+            this.powerSaverProfileControl.TabIndex = 0;
+            // 
             // turboCheckBox
             // 
             this.turboCheckBox.Anchor = System.Windows.Forms.AnchorStyles.Left;
@@ -211,6 +244,21 @@
             this.turboCheckBox.Text = "Enable hardware Turbo";
             this.toolTip1.SetToolTip(this.turboCheckBox, "Enable the Turbo. By disabling it, P0 can be used as\r\nnormal P-state.");
             this.turboCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.AutoSize = true;
+            this.button1.Location = new System.Drawing.Point(193, 392);
+            this.button1.Margin = new System.Windows.Forms.Padding(3, 12, 3, 3);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(98, 27);
+            this.button1.TabIndex = 8;
+            this.button1.Text = "Reset PStates";
+            this.toolTip1.SetToolTip(this.button1, "Removes all customized settings (voltages/dividers) from registry to start over w" +
+                    "ith default settings.");
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // serviceController1
             // 
@@ -258,54 +306,6 @@
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(143, 23);
             this.flowLayoutPanel1.TabIndex = 3;
-            // 
-            // button1
-            // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.AutoSize = true;
-            this.button1.Location = new System.Drawing.Point(193, 392);
-            this.button1.Margin = new System.Windows.Forms.Padding(3, 12, 3, 3);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(98, 27);
-            this.button1.TabIndex = 8;
-            this.button1.Text = "Reset PStates";
-            this.toolTip1.SetToolTip(this.button1, "Removes all customized settings (voltages/dividers) from registry to start over w" +
-                    "ith default settings.");
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // balancedProfileControl
-            // 
-            this.balancedProfileControl.AutoSize = true;
-            this.balancedProfileControl.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.balancedProfileControl.Location = new System.Drawing.Point(3, 3);
-            this.balancedProfileControl.Margin = new System.Windows.Forms.Padding(4);
-            this.balancedProfileControl.Name = "balancedProfileControl";
-            this.balancedProfileControl.Profile = BrazosTweaker.CnQProfile.Balanced;
-            this.balancedProfileControl.Size = new System.Drawing.Size(293, 150);
-            this.balancedProfileControl.TabIndex = 0;
-            // 
-            // highPerformanceProfileControl
-            // 
-            this.highPerformanceProfileControl.AutoSize = true;
-            this.highPerformanceProfileControl.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.highPerformanceProfileControl.Location = new System.Drawing.Point(3, 3);
-            this.highPerformanceProfileControl.Margin = new System.Windows.Forms.Padding(4);
-            this.highPerformanceProfileControl.Name = "highPerformanceProfileControl";
-            this.highPerformanceProfileControl.Profile = BrazosTweaker.CnQProfile.HighPerformance;
-            this.highPerformanceProfileControl.Size = new System.Drawing.Size(293, 150);
-            this.highPerformanceProfileControl.TabIndex = 0;
-            // 
-            // powerSaverProfileControl
-            // 
-            this.powerSaverProfileControl.AutoSize = true;
-            this.powerSaverProfileControl.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.powerSaverProfileControl.Location = new System.Drawing.Point(3, 3);
-            this.powerSaverProfileControl.Margin = new System.Windows.Forms.Padding(4);
-            this.powerSaverProfileControl.Name = "powerSaverProfileControl";
-            this.powerSaverProfileControl.Profile = BrazosTweaker.CnQProfile.PowerSaver;
-            this.powerSaverProfileControl.Size = new System.Drawing.Size(293, 150);
-            this.powerSaverProfileControl.TabIndex = 0;
             // 
             // ServiceDialog
             // 
