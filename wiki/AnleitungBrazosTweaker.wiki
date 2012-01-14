@@ -63,7 +63,3 @@ Etwas weiter darunter friert bei mir der Bildschirm ein und nur ein langes Drüc
 
 === Frequenz/Divider ===
 Die Einstellungen des Dividers haben auf der NB bisher keine Funktion.
-
-
-Wenn dir diese Anwendung gefällt und du willst meine Arbeit unterstützen, kannst du hier spenden.<br>
-[https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=MXVAJLM9ABXC4 https://www.paypal.com/en_US/i/btn/btn_donateCC_LG.gif]
