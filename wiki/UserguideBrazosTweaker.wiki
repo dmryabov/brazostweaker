@@ -5,6 +5,11 @@
 To use the tool and it's built-in service, you need to obviously install the given files from the Download section. It could be, that you need to download and install Microsofts .NET Framework 4 upfront, but only in case, it can't be found.
 If you already have a previous version of the BrazosTweaker (OntarioTweaker or PhenomMsrTweaker) installed, I strongly suggest to uninstall it first.
 
+BrazosTweaker under Win8
+hint from user alejandronova
+
+To install BrazosTweaker in Windows 8, you need to enable the .NET Runtime 2.0. You do that in the "Enable/Disable Windows features" that you'll find in "Programs and Features"
+
 == Tabs ==
 Once it has started up, you will see a window six different tabs. The three tabs on the left belong to states, which the CPU can be in, while the next two tabs show the setup for the two available NB (Northbridge) PStates. The last, but not least, is the status tab, which can be used for debug and more detailed info on the internal registers.
 
